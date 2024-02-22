@@ -11,5 +11,6 @@
     <color name="text_gry">#6B6B6B</color>
     <color name="tf_text_color">#848484</color>
     <color name="tf_color">#E1E0E0</color>
+    <color name="change_profil_photo_text">#1877F2</color>
 
 </resources>
