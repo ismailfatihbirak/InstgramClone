@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.instgramclone.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun SignInPage() {
     var tf by remember { mutableStateOf("") }
@@ -47,70 +47,30 @@ fun SignInPage() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Image(painter = painterResource(id = R.drawable.logos_instagram_2), contentDescription = "")
+        Image(
+            painter = painterResource(id = R.drawable.logos_instagram_2),
+            contentDescription = "")
         Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
-            value = tf,
-            onValueChange = { tf = it },
-            modifier = Modifier.fillMaxWidth(),
-            label = {
-                Text("Email or Username",
-                    fontSize = 10.sp,) }
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = password,
-            onValueChange = { newText ->
-                password = newText
-            },
-            label = {
-                Text(text = "Password",
-                    fontSize = 10.sp)
-            },
-            visualTransformation = if (showPassword) {
-
-                VisualTransformation.None
-
-            } else {
-
-                PasswordVisualTransformation()
-
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            trailingIcon = {
-                if (showPassword) {
-                    IconButton(onClick = { showPassword = false }) {
-                        Icon(
-                            painterResource(id = R.drawable.baseline_visibility_24),
-                            contentDescription = "hide_password"
-                        )
-                    }
-                } else {
-                    IconButton(
-                        onClick = { showPassword = true }) {
-                        Icon(
-                            painterResource(id = R.drawable.baseline_visibility_off_24) ,
-                            contentDescription = "hide_password"
-                        )
-                    }
-                }
+        EmailTextField(
+            tf = tf,
+            onTfChange = { newTf ->
+                tf = newTf
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
-        Button(onClick = { /* Do something! */ },colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.fb_blue),
-            contentColor = Color.White
-        ), modifier = Modifier.fillMaxWidth(),) {
-
-            Text(text = "Log in", fontSize = 12.sp)
-        }
-
-
-
-
-
-
+        PasswordTextField(
+            password = password,
+            onPasswordChange = { newPassword ->
+                password = newPassword
+            },
+            showPassword = showPassword,
+            onToggleShowPassword = {
+                showPassword = !showPassword
+            }
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        BlueButton(
+            onClick = { /*TODO*/ },
+            text = "Log in")
     }
 }

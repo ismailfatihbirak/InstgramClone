@@ -54,87 +54,42 @@ fun SignUpPage2() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Image(painter = painterResource(id = com.example.instgramclone.R.drawable.logos_instagram_2), contentDescription = "")
+        Image(
+            painter = painterResource(id = com.example.instgramclone.R.drawable.logos_instagram_2),
+            contentDescription = "")
+
         Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
-            value = tf,
-            onValueChange = { tf = it },
-            modifier = Modifier.fillMaxWidth(),
-            label = {
-                Text("Email",
-                    fontSize = 10.sp,) }
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = password,
-            onValueChange = { newText ->
-                password = newText
-            },
-            label = {
-                Text(text = "Password",
-                    fontSize = 10.sp)
-            },
-            visualTransformation = if (showPassword) {
-
-                VisualTransformation.None
-
-            } else {
-
-                PasswordVisualTransformation()
-
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            trailingIcon = {
-                if (showPassword) {
-                    IconButton(onClick = { showPassword = false }) {
-                        Icon(
-                            painterResource(id = R.drawable.baseline_visibility_24),
-                            contentDescription = "hide_password"
-                        )
-                    }
-                } else {
-                    IconButton(
-                        onClick = { showPassword = true }) {
-                        Icon(
-                            painterResource(id = R.drawable.baseline_visibility_off_24) ,
-                            contentDescription = "hide_password"
-                        )
-                    }
-                }
+        EmailTextField(
+            tf = tf,
+            onTfChange = { newTf ->
+                tf = newTf
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
-        Button(onClick = { /* Do something! */ },colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.fb_blue),
-            contentColor = Color.White
-        ), modifier = Modifier.fillMaxWidth(),) {
 
-            Text(text = "Sign Up", fontSize = 12.sp)
-        }
+        PasswordTextField(
+            password = password,
+            onPasswordChange = { newPassword ->
+                password = newPassword
+            },
+            showPassword = showPassword,
+            onToggleShowPassword = {
+                showPassword = !showPassword
+            }
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        BlueButton(
+            onClick = { /*TODO*/ },
+            text = "Sign Up")
         Spacer(modifier = Modifier.height(40.dp))
-        Row (
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()){
-            Image(painter = painterResource(id = R.drawable.line_2), contentDescription = "")
-            Spacer(modifier = Modifier.width(20.dp))
-            Text(text = "OR", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(modifier = Modifier.width(20.dp))
-            Image(painter = painterResource(id = R.drawable.line_2), contentDescription = "")
-        }
+
+        Or()
+
         Spacer(modifier = Modifier.height(40.dp))
-        Button(onClick = { /* Do something! */ },colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.fb_blue),
-            contentColor = Color.White
-        ), modifier = Modifier.fillMaxWidth(),) {
-            Icon(
-                painterResource(id = R.drawable.vector ), contentDescription = "",
-                modifier = Modifier.size(ButtonDefaults.IconSize))
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = "Sign Up with Facebook", fontSize = 12.sp)
-        }
+
+        FacebookButton(
+            onClick = { /*TODO*/ },
+            text = "Sign Up with Facebook")
 
 
 
@@ -144,4 +99,75 @@ fun SignUpPage2() {
 
 
 }
+
+@Composable
+fun BlueButton(onClick: () -> Unit,text : String) {
+    Button(
+        onClick = onClick,colors = ButtonDefaults.buttonColors(
+        containerColor = colorResource(id = R.color.fb_blue),
+        contentColor = Color.White
+    ), modifier = Modifier.fillMaxWidth(),) {
+
+        Text(text = text, fontSize = 12.sp)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PasswordTextField(
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    showPassword: Boolean,
+    onToggleShowPassword: () -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = password,
+        onValueChange = onPasswordChange,
+        label = {
+            Text(text = "Password",
+                fontSize = 10.sp)
+        },
+        visualTransformation = if (showPassword) {
+
+            VisualTransformation.None
+
+        } else {
+
+            PasswordVisualTransformation()
+
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon = {
+            IconButton(
+                onClick = onToggleShowPassword
+            ) {
+                Icon(
+                    painter = painterResource(id = if (showPassword) R.drawable.baseline_visibility_24 else R.drawable.baseline_visibility_off_24),
+                    contentDescription = "hide_password"
+                )
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EmailTextField(
+    tf: String,
+    onTfChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = tf,
+        onValueChange = onTfChange,
+        modifier = Modifier.fillMaxWidth(),
+        label = {
+            Text(
+                text = "Email",
+                fontSize = 10.sp
+            )
+        }
+    )
+}
+
 

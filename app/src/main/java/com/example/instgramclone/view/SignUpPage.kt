@@ -32,31 +32,27 @@ fun SignUpPage() {
         modifier = Modifier.padding(all=30.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally) {
+
         Spacer(modifier = Modifier.height(80.dp))
-        Image(painter = painterResource(id = R.drawable.logos_instagram), contentDescription = "" )
+        Image(
+            painter = painterResource(id = R.drawable.logos_instagram),
+            contentDescription = "" )
         Spacer(modifier = Modifier.height(30.dp))
-        Button(onClick = { /* Do something! */ },colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.fb_blue),
-            contentColor = Color.White
-        ), modifier = Modifier.fillMaxWidth(),) {
-            Icon(
-                painterResource(id = R.drawable.vector ), contentDescription = "",
-                modifier = Modifier.size(ButtonDefaults.IconSize))
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = "Continue with Facebook", fontSize = 12.sp)
-        }
-        Row (
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()){
-            Image(painter = painterResource(id = R.drawable.line_2), contentDescription = "")
-            Spacer(modifier = Modifier.width(20.dp))
-            Text(text = "OR", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(modifier = Modifier.width(20.dp))
-            Image(painter = painterResource(id = R.drawable.line_2), contentDescription = "")
-        }
-        TextButton(onClick = { /*TODO*/ }) {
-            Text(text = "Sign Up With Email", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.Black)
+
+        FacebookButton(
+            onClick = {
+            /* Do something! */
+        }, text = "Continue with Facebook")
+
+        Or()
+
+        TextButton(
+            onClick = { /*TODO*/ }) {
+            Text(
+                text = "Sign Up With Email",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black)
         }
 
     }
@@ -64,10 +60,54 @@ fun SignUpPage() {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally){
         TextButton(onClick = { /*TODO*/ }){
-            Text(text = "Already have an account", fontSize = 12.sp, color = colorResource(id = R.color.text_gry))
-            Text(text = "Sign in.", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Color.Black)
+            Text(
+                text = "Already have an account",
+                fontSize = 12.sp,
+                color = colorResource(id = R.color.text_gry))
+            Text(
+                text = "Sign in.",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black)
         }
     }
 
 
+}
+@Composable
+fun FacebookButton(onClick: () -> Unit,text : String) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+        containerColor = colorResource(id = R.color.fb_blue),
+        contentColor = Color.White
+    ), modifier = Modifier.fillMaxWidth(),) {
+        Icon(
+            painterResource(id = R.drawable.vector ),
+            contentDescription = "",
+            modifier = Modifier.size(ButtonDefaults.IconSize))
+        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+        Text(
+            text = text,
+            fontSize = 12.sp)
+    }
+}
+
+@Composable
+fun Or() {
+    Row (
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()){
+        Image(
+            painter = painterResource(id = R.drawable.line_2),
+            contentDescription = "")
+        Spacer(modifier = Modifier.width(20.dp))
+        Text(
+            text = "OR",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold)
+        Spacer(modifier = Modifier.width(20.dp))
+        Image(painter = painterResource(id = R.drawable.line_2), contentDescription = "")
+    }
 }

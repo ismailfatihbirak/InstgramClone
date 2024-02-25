@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.instgramclone.ui.theme.InstgramCloneTheme
 import com.example.instgramclone.view.EditProfilePage
+import com.example.instgramclone.view.HomePage
 import com.example.instgramclone.view.SignInPage
 import com.example.instgramclone.view.SignUpPage
 import com.example.instgramclone.view.SignUpPage2
