@@ -32,11 +32,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.instgramclone.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProfilePage() {
+fun EditProfilePage(navController: NavController) {
     var name by remember { mutableStateOf("") }
     var userName by remember { mutableStateOf("") }
     var bio by remember { mutableStateOf("") }
@@ -51,7 +52,7 @@ fun EditProfilePage() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically){
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.navigate("homepage") }) {
                 Icon(Icons.Default.Clear, contentDescription = "", modifier = Modifier.size(40.dp))
             }
             Text(text = "Edit Profile", fontSize = 16.sp)

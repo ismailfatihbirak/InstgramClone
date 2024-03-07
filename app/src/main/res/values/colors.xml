@@ -7,10 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
     <color name="fb_blue">#1877F2</color>
     <color name="text_gry">#6B6B6B</color>
     <color name="tf_text_color">#848484</color>
     <color name="tf_color">#E1E0E0</color>
     <color name="change_profil_photo_text">#1877F2</color>
+    <color name="CommentsAllText">#8A8A8A</color>
+    <color name="MessageButton">#DFDFDF</color>
 
 </resources>

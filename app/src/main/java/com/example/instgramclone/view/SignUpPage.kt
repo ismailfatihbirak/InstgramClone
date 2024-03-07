@@ -24,10 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.instgramclone.R
 
 @Composable
-fun SignUpPage() {
+fun SignUpPage(navController: NavController) {
     Column(
         modifier = Modifier.padding(all=30.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -41,7 +42,7 @@ fun SignUpPage() {
 
         FacebookButton(
             onClick = {
-            /* Do something! */
+            navController.navigate("signuppage2")
         }, text = "Continue with Facebook")
 
         Or()

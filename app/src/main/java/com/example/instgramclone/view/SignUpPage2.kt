@@ -41,11 +41,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.instgramclone.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpPage2() {
+fun SignUpPage2(navController: NavController) {
     var tf by remember { mutableStateOf("") }
     var password by remember { mutableStateOf(value = "") }
     var showPassword by remember { mutableStateOf(value = false) }
@@ -79,7 +80,7 @@ fun SignUpPage2() {
         )
         Spacer(modifier = Modifier.height(12.dp))
         BlueButton(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate("signinpage") },
             text = "Sign Up")
         Spacer(modifier = Modifier.height(40.dp))
 
