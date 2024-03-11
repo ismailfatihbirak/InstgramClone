@@ -1,5 +1,11 @@
 package com.example.instgramclone.view
 
+import android.content.ContentValues.TAG
+import android.os.Build
+import android.provider.Settings.Global.getString
+import android.util.Log
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,8 +39,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -43,13 +51,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.instgramclone.R
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
+@RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpPage2(navController: NavController) {
-    var tf by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf(value = "") }
     var showPassword by remember { mutableStateOf(value = false) }
+    lateinit var auth: FirebaseAuth
+    val context = LocalContext.current
+    auth = Firebase.auth
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+    val token = stringResource(R.string.default_web_client_id)
+    val launcher = rememberFirebaseAuthLauncher(
+        onAuthComplete = { result ->
+            user = result.user
+            navController.navigate("homepage")
+        },
+        onAuthError = {
+            user = null
+        }
+    )
     Column (
         modifier = Modifier.padding(all=30.dp),
         verticalArrangement = Arrangement.Center,
@@ -61,9 +90,9 @@ fun SignUpPage2(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
         EmailTextField(
-            tf = tf,
+            tf = email,
             onTfChange = { newTf ->
-                tf = newTf
+                email = newTf
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -80,7 +109,23 @@ fun SignUpPage2(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(12.dp))
         BlueButton(
-            onClick = { navController.navigate("signinpage") },
+            onClick = {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(context.mainExecutor) { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "createUserWithEmail:success")
+                            val user = auth.currentUser
+                            navController.navigate("signinpage")
+                        } else {
+                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                            Toast.makeText(
+                                context,
+                                "Authentication failed.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                    }
+                 },
             text = "Sign Up")
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -88,9 +133,18 @@ fun SignUpPage2(navController: NavController) {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        FacebookButton(
-            onClick = { /*TODO*/ },
-            text = "Sign Up with Facebook")
+        GoogleButton(
+            onClick = {
+                val gso =
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(token)
+                        .requestEmail()
+                        .build()
+                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                launcher.launch(googleSignInClient.signInIntent)
+
+            },
+            text = "Sign Up with Google")
 
 
 

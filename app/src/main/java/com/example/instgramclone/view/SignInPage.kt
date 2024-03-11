@@ -1,5 +1,11 @@
 package com.example.instgramclone.view
 
+import android.content.ContentValues.TAG
+import android.os.Build
+import android.provider.Settings.Global.getString
+import android.util.Log
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,13 +43,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.instgramclone.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 
+@RequiresApi(Build.VERSION_CODES.P)
 @Composable
 fun SignInPage(navController: NavController) {
-    var tf by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf(value = "") }
     var showPassword by remember { mutableStateOf(value = false) }
+    lateinit var auth: FirebaseAuth
+    val context = LocalContext.current
+    auth = Firebase.auth
+
+
+
     Column (
         modifier = Modifier.padding(all=30.dp),
         verticalArrangement = Arrangement.Center,
@@ -53,9 +73,9 @@ fun SignInPage(navController: NavController) {
             contentDescription = "")
         Spacer(modifier = Modifier.height(20.dp))
         EmailTextField(
-            tf = tf,
+            tf = email,
             onTfChange = { newTf ->
-                tf = newTf
+                email = newTf
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -71,7 +91,24 @@ fun SignInPage(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(12.dp))
         BlueButton(
-            onClick = { navController.navigate("editprofilepage") },
+            onClick = {
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(context.mainExecutor) { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "signInWithEmail:success")
+                            val user = auth.currentUser
+                            navController.navigate("editprofilepage")
+                        } else {
+                            Log.w(TAG, "signInWithEmail:failure", task.exception)
+                            Toast.makeText(
+                                context,
+                                "Authentication failed.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                    }
+                //navController.navigate("editprofilepage")
+                 },
             text = "Log in")
     }
 }
