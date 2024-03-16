@@ -53,6 +53,8 @@ import com.example.instgramclone.view.ReelsPage
 import com.example.instgramclone.view.SignInPage
 import com.example.instgramclone.view.SignUpPage
 import com.example.instgramclone.view.SignUpPage2
+import com.example.instgramclone.viewmodel.SignInPageViewModel
+import com.example.instgramclone.viewmodel.SignUpPage2ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -75,15 +77,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PageTransations() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "signuppage") {
+    NavHost(navController, startDestination = "SignUpPage2") {
         composable("signuppage") { backStackEntry ->
             SignUpPage(navController)
         }
         composable("signuppage2") { backStackEntry ->
-            SignUpPage2(navController)
+            val viewModel = hiltViewModel<SignUpPage2ViewModel>()
+            SignUpPage2(navController,viewModel)
         }
         composable("signinpage") { backStackEntry ->
-            SignInPage(navController)
+            val viewModel = hiltViewModel<SignInPageViewModel>()
+            SignInPage(navController,viewModel)
         }
         composable("editprofilepage") { backStackEntry ->
             EditProfilePage(navController)

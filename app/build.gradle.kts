@@ -100,5 +100,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
 
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
 
 }

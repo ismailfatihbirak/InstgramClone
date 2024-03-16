@@ -1,6 +1,8 @@
 package com.example.instgramclone.view
 
+import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -59,7 +61,7 @@ fun ReelsPage(navController: NavController) {
             .fillMaxSize()
             .padding(bottom = 30.dp).padding(innerPadding),
             contentAlignment = Alignment.BottomStart){
-            ExoPlayerView()
+            ExoPlayerView(EXAMPLE_VIDEO_URI)
             Column (horizontalAlignment = Alignment.End,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -123,15 +125,14 @@ fun ReelsPage(navController: NavController) {
 
 const val EXAMPLE_VIDEO_URI = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
 
-
 @Composable
-fun ExoPlayerView() {
+fun ExoPlayerView(uri: String) {
     val context = LocalContext.current
 
-    val exoPlayer = ExoPlayer.Builder(context).build()
+    val exoPlayer = remember { ExoPlayer.Builder(context).build() }
 
-    val mediaSource = remember(EXAMPLE_VIDEO_URI) {
-        MediaItem.fromUri(EXAMPLE_VIDEO_URI)
+    val mediaSource = remember(uri) {
+        MediaItem.fromUri(uri)
     }
 
     LaunchedEffect(mediaSource) {
@@ -146,22 +147,23 @@ fun ExoPlayerView() {
         }
     }
 
-    AndroidView(
-        factory = { ctx ->
-            PlayerView(ctx).apply {
-                player = exoPlayer
-                useController = false
-                setOnClickListener { view ->
-                    if (exoPlayer.isPlaying) {
-                        exoPlayer.pause()
-                    } else {
-                        exoPlayer.play()
-                    }
-                }
-            }
+    val playerView = remember {
+        PlayerView(context).apply {
+            player = exoPlayer
+            useController = false
+        }
+    }
 
-        },
+    AndroidView(
+        factory = { playerView },
         modifier = Modifier
             .fillMaxSize()
+            .clickable {
+                if (exoPlayer.isPlaying) {
+                    exoPlayer.pause()
+                } else {
+                    exoPlayer.play()
+                }
+            }
     )
 }

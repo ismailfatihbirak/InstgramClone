@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.instgramclone.R
+import com.example.instgramclone.viewmodel.SignUpPage2ViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -61,7 +62,7 @@ import com.google.firebase.auth.auth
 @RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpPage2(navController: NavController) {
+fun SignUpPage2(navController: NavController,viewModel:SignUpPage2ViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf(value = "") }
     var showPassword by remember { mutableStateOf(value = false) }
@@ -110,22 +111,11 @@ fun SignUpPage2(navController: NavController) {
         Spacer(modifier = Modifier.height(12.dp))
         BlueButton(
             onClick = {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(context.mainExecutor) { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "createUserWithEmail:success")
-                            val user = auth.currentUser
-                            navController.navigate("signinpage")
-                        } else {
-                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                            Toast.makeText(
-                                context,
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-                    }
-                 },
+                viewModel.emailAuthentication(email, password, context)
+                if (viewModel.emailAuthControl){
+                    navController.navigate("signinpage")
+                }
+                      },
             text = "Sign Up")
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -145,9 +135,6 @@ fun SignUpPage2(navController: NavController) {
 
             },
             text = "Sign Up with Google")
-
-
-
     }
 
 

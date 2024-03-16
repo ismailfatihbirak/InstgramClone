@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.instgramclone.R
+import com.example.instgramclone.viewmodel.SignInPageViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -53,15 +54,11 @@ import com.google.firebase.auth.auth
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
-fun SignInPage(navController: NavController) {
+fun SignInPage(navController: NavController,viewModel: SignInPageViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf(value = "") }
     var showPassword by remember { mutableStateOf(value = false) }
-    lateinit var auth: FirebaseAuth
     val context = LocalContext.current
-    auth = Firebase.auth
-
-
 
     Column (
         modifier = Modifier.padding(all=30.dp),
@@ -92,22 +89,11 @@ fun SignInPage(navController: NavController) {
         Spacer(modifier = Modifier.height(12.dp))
         BlueButton(
             onClick = {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(context.mainExecutor) { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "signInWithEmail:success")
-                            val user = auth.currentUser
-                            navController.navigate("editprofilepage")
-                        } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.exception)
-                            Toast.makeText(
-                                context,
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-                    }
-                //navController.navigate("editprofilepage")
+                viewModel.emailAuthentication(email, password, context)
+                if (viewModel.emailAuthControl){
+                    navController.navigate("editprofilepage")
+                }
+
                  },
             text = "Log in")
     }
