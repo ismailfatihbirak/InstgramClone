@@ -1,19 +1,9 @@
 package com.example.instgramclone.view
 
-import android.app.Activity
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.content.IntentSender
-import android.os.Bundle
-import android.provider.Settings
-import android.provider.Settings.Global.getString
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -31,8 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,21 +34,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.data.UiToolingDataApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.example.instgramclone.R
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
+import com.example.instgramclone.viewmodel.SignUpPage2ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -69,11 +50,11 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-lateinit var googleSignInClient: GoogleSignInClient
-lateinit var auth: FirebaseAuth
+
 
 @Composable
-fun SignUpPage(navController: NavController) {
+fun SignUpPage(navController: NavController,viewModel: SignUpPage2ViewModel) {
+    var auth: FirebaseAuth
     val context = LocalContext.current
     auth = Firebase.auth
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
@@ -87,7 +68,6 @@ fun SignUpPage(navController: NavController) {
             user = null
         }
     )
-
     Column(
         modifier = Modifier.padding(all=30.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -109,7 +89,7 @@ fun SignUpPage(navController: NavController) {
                 val googleSignInClient = GoogleSignIn.getClient(context, gso)
                 launcher.launch(googleSignInClient.signInIntent)
 
-            }, text = "Continue with Google")
+                      }, text = "Continue with Google")
 
         Or()
 
@@ -182,7 +162,6 @@ fun Or() {
         Image(painter = painterResource(id = R.drawable.line_2), contentDescription = "")
     }
 }
-
 @Composable
 fun rememberFirebaseAuthLauncher(
     onAuthComplete: (AuthResult) -> Unit,
@@ -203,6 +182,10 @@ fun rememberFirebaseAuthLauncher(
         }
     }
 }
+
+
+
+
 
 
 

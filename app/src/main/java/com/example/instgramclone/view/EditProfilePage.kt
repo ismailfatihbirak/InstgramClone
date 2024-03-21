@@ -1,5 +1,9 @@
 package com.example.instgramclone.view
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,20 +32,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.instgramclone.R
+import com.example.instgramclone.viewmodel.EditProfilePageViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProfilePage(navController: NavController) {
+fun EditProfilePage(navController: NavController,viewModel:EditProfilePageViewModel) {
     var name by remember { mutableStateOf("") }
     var userName by remember { mutableStateOf("") }
     var bio by remember { mutableStateOf("") }
+    var uri by remember { mutableStateOf<Uri?>(null) }
+    var downloadUri by remember { mutableStateOf("") }
+    var auth: FirebaseAuth
+    auth = Firebase.auth
+    downloadUri = viewModel.downloadUri
+    uri?.let { viewModel.uploadProfilePhoto(it) }
 
+    val PhotoPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { selectedUri ->
+            uri = selectedUri
+        })
 
     Column(
         modifier = Modifier.padding(all=15.dp),
@@ -56,23 +80,29 @@ fun EditProfilePage(navController: NavController) {
                 Icon(Icons.Default.Clear, contentDescription = "", modifier = Modifier.size(40.dp))
             }
             Text(text = "Edit Profile", fontSize = 16.sp)
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                viewModel.saveProfileInformation(auth.currentUser?.uid!!,downloadUri,userName,name,bio)
+            }) {
                 Icon(Icons.Default.Check, contentDescription = "", modifier = Modifier.size(40.dp))
             }
         }
         Column (
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally){
-            Image(
-                painter = painterResource(id = R.drawable.pp),
+            AsyncImage(
+                model = uri,
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(CircleShape)
-            )
+                    .clip(CircleShape))
             Spacer(modifier = Modifier.height(10.dp))
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = {
+                PhotoPicker.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+
+                )
+            }) {
                 Text(text = "Change Profile photo", fontSize = 17.sp, color = colorResource(id = R.color.change_profil_photo_text))
             }
         }
@@ -108,4 +138,5 @@ fun EditProfilePage(navController: NavController) {
         Spacer(modifier = Modifier.height(200.dp))
 
     }
+
 }
