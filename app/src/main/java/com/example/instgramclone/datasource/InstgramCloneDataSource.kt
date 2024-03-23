@@ -24,13 +24,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.instgramclone.R
+import com.example.instgramclone.model.Post
 import com.example.instgramclone.model.User
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -39,8 +42,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -48,6 +55,7 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class InstgramCloneDataSource(var collectionUser: CollectionReference) {
@@ -99,32 +107,37 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
     suspend fun saveProfileInformation(authId:String, profilePhoto:String, userName:String, name:String, bio:String) =
         withContext(Dispatchers.IO){
             val newUser = User(authId,profilePhoto,userName,name,bio,null,null,null,null)
-            collectionUser.document().set(newUser)
+            collectionUser.document(authId).set(newUser)
         }
 
-    suspend fun uploadProfilePhoto(uri: Uri): String = withContext(Dispatchers.IO) {
+    suspend fun uploadPhoto(uri: Uri,pathString:String): String = withContext(Dispatchers.IO) {
         var storage: FirebaseStorage = Firebase.storage
         val storageRef = storage.reference
         val uuid = UUID.randomUUID()
         val imageName = "$uuid.jpg"
-        val imagesRef = storageRef.child("profileimages").child(imageName)
-
-        if (uri != null) {
-            imagesRef.putFile(uri).await()
-        }
-
-        val downloadUriTask = storage.reference.child("profileimages").child(imageName).downloadUrl
-        val downloadUri = try {
-            downloadUriTask.await()
-        } catch (e: Exception) {
-            null
-        }
-
-        downloadUri?.toString() ?: ""
+        val imagesRef = storageRef.child(pathString).child(imageName)
+        uri.let { imagesRef.putFile(uri).await() }
+        val downloadUri = imagesRef.downloadUrl.await()
+        return@withContext downloadUri?.toString() ?: ""
     }
 
+    suspend fun addPost(newPost: Post,authId: String) = withContext(Dispatchers.IO) {
+        collectionUser.document(authId).update("posts", FieldValue.arrayUnion(newPost))
+    }
 
-
+    suspend fun homePagePostList(): List<User> = suspendCoroutine { continuation ->
+        val liste = ArrayList<User>()
+        collectionUser.get().addOnSuccessListener { snapshot ->
+            for (document in snapshot.documents) {
+                val user = document.toObject(User::class.java)
+                user?.let { liste.add(it) }
+            }
+            continuation.resume(liste)
+        }.addOnFailureListener { exception ->
+            // Hata durumunda işlemler
+            continuation.resumeWithException(exception)
+        }
+    }
 
 
 }

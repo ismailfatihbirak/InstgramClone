@@ -18,7 +18,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,11 +34,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
@@ -50,9 +56,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.instgramclone.R
+import com.example.instgramclone.model.Post
+import com.example.instgramclone.viewmodel.PostPageViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -66,17 +75,22 @@ import kotlinx.coroutines.launch
 import java.lang.reflect.Modifier
 
 @Composable
-fun PostPage(navController: NavController) {
+fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
+    var auth:FirebaseAuth
+    auth = Firebase.auth
+
     var photoDescription by remember { mutableStateOf("") }
     var uri by remember { mutableStateOf<Uri?>(null) }
     var mediaSelected by remember { mutableStateOf(false) }
-    var auth:FirebaseAuth
-    var firestore : FirebaseFirestore
-    var storage : FirebaseStorage
-    auth = Firebase.auth
-    firestore = Firebase.firestore
-    storage = Firebase.storage
-    Scaffold(){ innerPadding ->
+    val downloadUri = viewModel.downloadUri.observeAsState().value
+    val authId = auth.currentUser?.uid
+    val newPost = Post(downloadUri, null, null, photoDescription)
+
+    LaunchedEffect(mediaSelected) {
+        uri?.let { viewModel.uploadPostPhoto(it,"postmedia") }
+    }
+
+    Scaffold{ innerPadding ->
         Column (
             modifier = androidx.compose.ui.Modifier
                 .padding(innerPadding),
@@ -129,7 +143,10 @@ fun PostPage(navController: NavController) {
                 modifier = androidx.compose.ui.Modifier
                     .fillMaxWidth()
                     .padding(all = 15.dp))
-            Button(onClick = {}, colors = ButtonDefaults.buttonColors(
+            Button(onClick = {
+                viewModel.addPost(newPost,authId!!)
+            }
+                , colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.fb_blue),
                     contentColor = Color.White
             )) {
@@ -143,24 +160,30 @@ fun PostPage(navController: NavController) {
                     mediaSelected = true
                 })
 
-            if (!mediaSelected) {
-                when (selectedTabIndex.value) {
-                    0, 1 -> {
-                        singlePhotoPicker.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
+            LaunchedEffect(selectedTabIndex.value){
+                if (!mediaSelected) {
+                    when (selectedTabIndex.value) {
+                        0, 1 -> {
+                            singlePhotoPicker.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        }
+                        2 -> {
+                            singlePhotoPicker.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)
+                            )
+                        }
                     }
-                    2 -> {
-                        singlePhotoPicker.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)
-                        )
-                    }
-                }
 
+                }
             }
+
         }
     }
 }
+
+
+
 
 
 

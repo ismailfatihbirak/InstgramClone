@@ -24,6 +24,8 @@ import com.example.instgramclone.view.SignInPage
 import com.example.instgramclone.view.SignUpPage
 import com.example.instgramclone.view.SignUpPage2
 import com.example.instgramclone.viewmodel.EditProfilePageViewModel
+import com.example.instgramclone.viewmodel.HomePageViewModel
+import com.example.instgramclone.viewmodel.PostPageViewModel
 import com.example.instgramclone.viewmodel.SignInPageViewModel
 import com.example.instgramclone.viewmodel.SignUpPage2ViewModel
 import com.google.android.gms.auth.api.identity.Identity
@@ -50,7 +52,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PageTransations() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "EditProfilePage") {
+    NavHost(navController, startDestination = "signuppage") {
         composable("signuppage") { backStackEntry ->
             val viewModel = hiltViewModel<SignUpPage2ViewModel>()
             SignUpPage(navController,viewModel)
@@ -68,7 +70,8 @@ fun PageTransations() {
             EditProfilePage(navController,viewModel)
         }
         composable("homepage") { backStackEntry ->
-            HomePage(navController)
+            val viewModel = hiltViewModel<HomePageViewModel>()
+            HomePage(navController,viewModel)
         }
         composable("explorepage") { backStackEntry ->
             ExplorePage(navController)
@@ -77,7 +80,8 @@ fun PageTransations() {
             MyProfilePage(navController)
         }
         composable("postpage") { backStackEntry ->
-            PostPage(navController)
+            val viewModel = hiltViewModel<PostPageViewModel>()
+            PostPage(navController,viewModel)
         }
         composable("profilepage") { backStackEntry ->
             ProfilePage(navController)

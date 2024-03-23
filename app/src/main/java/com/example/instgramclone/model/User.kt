@@ -1,28 +1,28 @@
 package com.example.instgramclone.model
 
 data class User(
-    val authId: String? = null,
-    val profilePhoto: String? = null,
-    val userName: String? = null,
-    val name: String? = null,
-    val bio: String? = null,
-    val posts: ArrayList<Post>? = arrayListOf(),
-    val reels: ArrayList<Reel>? = arrayListOf(),
-    val story: String? = null,
-    val follower: String? = null,
-    val following: String? = null
+    var authId: String? = null,
+    var profilePhoto: String? = null,
+    var userName: String? = null,
+    var name: String? = null,
+    var bio: String? = null,
+    var posts: List<Post>? = listOf<Post>(),
+    var reels: List<Reel>? = listOf<Reel>(),
+    var story: String? = null,
+    var follower: String? = null,
+    var following: String? = null
 )
 data class Post(
-    val photo:String? = null,
-    val like:ArrayList<User>? = arrayListOf(),
-    val comment:ArrayList<User>? = arrayListOf(),
-    val photoDescription:String? = null
+    var photo:String? = null,
+    var like:List<User>? = listOf<User>(),
+    var comment:List<User>? = listOf<User>(),
+    var photoDescription:String? = null
 )
 
 data class Reel(
-    val video:String? = null,
-    val like:ArrayList<User>? = arrayListOf(),
-    val comment:ArrayList<User>? = arrayListOf(),
-    val videoDescription:String? = null
+    var video:String? = null,
+    var like:List<User>? = listOf<User>(),
+    var comment:List<User>? = listOf<User>(),
+    var videoDescription:String? = null
 )
 

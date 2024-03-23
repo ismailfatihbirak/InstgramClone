@@ -24,7 +24,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -55,17 +57,25 @@ fun EditProfilePage(navController: NavController,viewModel:EditProfilePageViewMo
     var userName by remember { mutableStateOf("") }
     var bio by remember { mutableStateOf("") }
     var uri by remember { mutableStateOf<Uri?>(null) }
-    var downloadUri by remember { mutableStateOf("") }
+    var mediaSelected by remember { mutableStateOf(false) }
+    val downloadUri = viewModel.downloadUri.observeAsState().value
     var auth: FirebaseAuth
     auth = Firebase.auth
-    downloadUri = viewModel.downloadUri
-    uri?.let { viewModel.uploadProfilePhoto(it) }
+
+    LaunchedEffect(mediaSelected){
+        uri?.let { viewModel.uploadProfilePhoto(it,"profileimages") }
+    }
+
+
 
     val PhotoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { selectedUri ->
             uri = selectedUri
+            mediaSelected = true
         })
+
+
 
     Column(
         modifier = Modifier.padding(all=15.dp),
@@ -76,12 +86,13 @@ fun EditProfilePage(navController: NavController,viewModel:EditProfilePageViewMo
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically){
-            IconButton(onClick = { navController.navigate("homepage") }) {
+            IconButton(onClick = {  }) {
                 Icon(Icons.Default.Clear, contentDescription = "", modifier = Modifier.size(40.dp))
             }
             Text(text = "Edit Profile", fontSize = 16.sp)
             IconButton(onClick = {
-                viewModel.saveProfileInformation(auth.currentUser?.uid!!,downloadUri,userName,name,bio)
+                viewModel.saveProfileInformation(auth.currentUser?.uid!!,downloadUri!!,userName,name,bio)
+                navController.navigate("homepage")
             }) {
                 Icon(Icons.Default.Check, contentDescription = "", modifier = Modifier.size(40.dp))
             }
@@ -100,7 +111,6 @@ fun EditProfilePage(navController: NavController,viewModel:EditProfilePageViewMo
             TextButton(onClick = {
                 PhotoPicker.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-
                 )
             }) {
                 Text(text = "Change Profile photo", fontSize = 17.sp, color = colorResource(id = R.color.change_profil_photo_text))
