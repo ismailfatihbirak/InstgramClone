@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.instgramclone.model.Post
+import com.example.instgramclone.model.User
 import com.example.instgramclone.repo.InstgramCloneRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class PostPageViewModel @Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
-    //var downloadUri by mutableStateOf("")
     var downloadUri = MutableLiveData("")
     fun uploadPostPhoto(uri: Uri,pathString:String) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -27,6 +27,11 @@ class PostPageViewModel @Inject constructor(var insrepo : InstgramCloneRepositor
     fun addPost(newPost: Post,authId:String){
         CoroutineScope(Dispatchers.Main).launch {
             insrepo.addPost(newPost,authId)
+        }
+    }
+    fun addStory(newStory:User,authId:String){
+        CoroutineScope(Dispatchers.Main).launch {
+            insrepo.addStory(newStory,authId)
         }
     }
 }

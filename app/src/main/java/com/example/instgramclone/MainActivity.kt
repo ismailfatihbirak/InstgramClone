@@ -9,9 +9,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.instgramclone.ui.theme.InstgramCloneTheme
 import com.example.instgramclone.view.EditProfilePage
 import com.example.instgramclone.view.ExplorePage
@@ -23,6 +25,7 @@ import com.example.instgramclone.view.ReelsPage
 import com.example.instgramclone.view.SignInPage
 import com.example.instgramclone.view.SignUpPage
 import com.example.instgramclone.view.SignUpPage2
+import com.example.instgramclone.view.StoryDetailPage
 import com.example.instgramclone.viewmodel.EditProfilePageViewModel
 import com.example.instgramclone.viewmodel.HomePageViewModel
 import com.example.instgramclone.viewmodel.PostPageViewModel
@@ -52,7 +55,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PageTransations() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "signuppage") {
+    NavHost(navController, startDestination = "HomePage") {
         composable("signuppage") { backStackEntry ->
             val viewModel = hiltViewModel<SignUpPage2ViewModel>()
             SignUpPage(navController,viewModel)
@@ -88,6 +91,18 @@ fun PageTransations() {
         }
         composable("reelspage") { backStackEntry ->
             ReelsPage(navController)
+        }
+        composable("storydetailpage/{profilePhoto}/{photo}/{userName}",
+            arguments = listOf(
+                navArgument("profilePhoto") { type = NavType.StringType},
+                navArgument("photo") { type = NavType.StringType},
+                navArgument("userName") { type = NavType.StringType}
+            )
+            ) { backStackEntry ->
+            val profilePhoto = backStackEntry.arguments?.getString("profilePhoto")!!
+            val photo = backStackEntry.arguments?.getString("photo")!!
+            val userName = backStackEntry.arguments?.getString("userName")!!
+            StoryDetailPage(navController,profilePhoto,photo,userName)
         }
 
 

@@ -142,24 +142,39 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
                                 fontSize = 12.sp)
                         }
                     }
-                    item{
-                        Item()
-                    }
-                    item{
-                        Item()
-                    }
-                    item{
-                        Item()
-                    }
-                    item{
-                        Item()
-                    }
-                    item{
-                        Item()
-                    }
-                    item{
-                        Item()
-                    }
+                    items(
+                        count = homePageList.value.count(),
+                        itemContent = {
+                            val user = homePageList.value[it]
+                            if (user.story != null){
+                                Card(
+                                    modifier = Modifier
+                                        .padding(all = 8.dp).
+                                        clickable {
+                                            navController.navigate("storydetailpage/" +
+                                                    "${URLEncoder.encode(user.profilePhoto, 
+                                                        StandardCharsets.UTF_8.toString())}/" +
+                                                    "${URLEncoder.encode(user.story, StandardCharsets.UTF_8.toString())}/" +
+                                                    "${user.userName}") }
+                                    , colors = CardDefaults.cardColors(
+                                        containerColor = Color.White
+                                    )) {
+                                    Column (horizontalAlignment = Alignment.CenterHorizontally){
+                                        AsyncImage(
+                                            model = user.story,
+                                            contentDescription = "",
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .clip(CircleShape)
+                                                .size(77.dp))
+                                        Text(
+                                            text = user.userName!!,
+                                            fontSize = 12.sp, modifier = Modifier.padding(top = 6.dp))
+                                    }
+                                }
+                            }
+                        }
+                    )
                 }
             }
             LazyColumn {

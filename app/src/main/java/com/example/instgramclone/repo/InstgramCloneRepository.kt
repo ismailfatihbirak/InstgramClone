@@ -13,5 +13,6 @@ class InstgramCloneRepository(var insdts:InstgramCloneDataSource) {
     suspend fun saveProfileInformation(authId:String, profilePhoto:String, userName:String, name:String, bio:String) = insdts.saveProfileInformation(authId, profilePhoto, userName, name, bio)
     suspend fun uploadPhoto(uri: Uri,pathString:String):String = insdts.uploadPhoto(uri,pathString)
     suspend fun addPost(newPost: Post,authId: String) = insdts.addPost(newPost,authId)
+    suspend fun addStory(newStory: User,authId: String) = insdts.addStory(newStory, authId)
     suspend fun homePagePostList() : List<User> = insdts.homePagePostList()
 }

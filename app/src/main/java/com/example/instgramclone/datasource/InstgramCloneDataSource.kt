@@ -124,6 +124,9 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
     suspend fun addPost(newPost: Post,authId: String) = withContext(Dispatchers.IO) {
         collectionUser.document(authId).update("posts", FieldValue.arrayUnion(newPost))
     }
+    suspend fun addStory(newStory: User,authId: String) = withContext(Dispatchers.IO) {
+        collectionUser.document(authId).update("story", newStory.story)
+    }
 
     suspend fun homePagePostList(): List<User> = suspendCoroutine { continuation ->
         val liste = ArrayList<User>()
@@ -134,10 +137,24 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
             }
             continuation.resume(liste)
         }.addOnFailureListener { exception ->
-            // Hata durumunda işlemler
             continuation.resumeWithException(exception)
         }
     }
+
+    suspend fun homePageStoryList(): List<User> = suspendCoroutine { continuation ->
+        val liste = ArrayList<User>()
+        collectionUser.get().addOnSuccessListener { snapshot ->
+            for (document in snapshot.documents) {
+                val user = document.toObject(User::class.java)
+                user?.let { liste.add(it) }
+            }
+            continuation.resume(liste)
+        }.addOnFailureListener { exception ->
+            continuation.resumeWithException(exception)
+        }
+    }
+
+
 
 
 }

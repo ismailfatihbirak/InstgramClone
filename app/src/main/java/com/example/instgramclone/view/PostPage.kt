@@ -61,6 +61,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.instgramclone.R
 import com.example.instgramclone.model.Post
+import com.example.instgramclone.model.User
 import com.example.instgramclone.viewmodel.PostPageViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -85,6 +86,7 @@ fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
     val downloadUri = viewModel.downloadUri.observeAsState().value
     val authId = auth.currentUser?.uid
     val newPost = Post(downloadUri, null, null, photoDescription)
+    val newStory = User(authId,null,null,null,null,null,null,downloadUri,null,null)
 
     LaunchedEffect(mediaSelected) {
         uri?.let { viewModel.uploadPostPhoto(it,"postmedia") }
@@ -144,7 +146,12 @@ fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
                     .fillMaxWidth()
                     .padding(all = 15.dp))
             Button(onClick = {
-                viewModel.addPost(newPost,authId!!)
+                when(selectedTabIndex.value){
+                    0->{viewModel.addPost(newPost,authId!!)}
+                    1->{viewModel.addStory(newStory,authId!!)}
+                    2->{}
+                }
+
             }
                 , colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.fb_blue),
