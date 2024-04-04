@@ -11,11 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
-class HomePageViewModel@Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
+class HomePageViewModel @Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
     var homePageList = MutableLiveData<List<User>>()
     fun homePagePostListfun(){
         viewModelScope.launch {
-            homePageList.value = insrepo.homePagePostList()
+            homePageList.value = insrepo.homePagePostReelsList()
         }
     }
 }

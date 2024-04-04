@@ -29,6 +29,7 @@ import com.example.instgramclone.view.StoryDetailPage
 import com.example.instgramclone.viewmodel.EditProfilePageViewModel
 import com.example.instgramclone.viewmodel.HomePageViewModel
 import com.example.instgramclone.viewmodel.PostPageViewModel
+import com.example.instgramclone.viewmodel.ReelsPageViewModel
 import com.example.instgramclone.viewmodel.SignInPageViewModel
 import com.example.instgramclone.viewmodel.SignUpPage2ViewModel
 import com.google.android.gms.auth.api.identity.Identity
@@ -55,7 +56,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PageTransations() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "HomePage") {
+    NavHost(navController, startDestination = "signuppage") {
         composable("signuppage") { backStackEntry ->
             val viewModel = hiltViewModel<SignUpPage2ViewModel>()
             SignUpPage(navController,viewModel)
@@ -90,7 +91,8 @@ fun PageTransations() {
             ProfilePage(navController)
         }
         composable("reelspage") { backStackEntry ->
-            ReelsPage(navController)
+            val viewModel = hiltViewModel<ReelsPageViewModel>()
+            ReelsPage(navController,viewModel)
         }
         composable("storydetailpage/{profilePhoto}/{photo}/{userName}",
             arguments = listOf(

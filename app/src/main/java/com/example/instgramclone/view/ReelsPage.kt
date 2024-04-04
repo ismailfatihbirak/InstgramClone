@@ -1,6 +1,9 @@
 package com.example.instgramclone.view
 
 import android.net.Uri
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.FrameLayout
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +16,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerDefaults
+import androidx.compose.foundation.pager.PagerSnapDistance
+import androidx.compose.foundation.pager.VerticalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -32,105 +41,176 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.DisposableEffectResult
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.common.util.Util
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DefaultDataSourceFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.SimpleExoPlayer
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.instgramclone.R
+import com.example.instgramclone.viewmodel.ReelsPageViewModel
 
+@androidx.annotation.OptIn(UnstableApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ReelsPage(navController: NavController) {
-    Scaffold(
+fun ReelsPage(navController: NavController,viewModel:ReelsPageViewModel) {
+    viewModel.userListfun()
+    viewModel.reelsListfun()
+    val userList = viewModel.usersList.observeAsState(listOf())
+    val reelsList = viewModel.reelsList.observeAsState(listOf())
+    val pagerState = rememberPagerState(pageCount = {reelsList.value.count()})
 
-    ){ innerPadding ->
+    VerticalPager(state = pagerState,
+        modifier = Modifier.fillMaxSize()) { page ->
+
+        var userIndex = 0
+
+        DisposableEffect(reelsList.value.lastIndex){
+            onDispose {
+                userIndex++
+            }
+        }
+        val user = userList.value[userIndex]
+        val reels = reelsList.value[pagerState.currentPage]
+
         Box(modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 30.dp).padding(innerPadding),
-            contentAlignment = Alignment.BottomStart){
-            ExoPlayerView(EXAMPLE_VIDEO_URI)
+            .padding(bottom = 30.dp),
+                contentAlignment = Alignment.BottomStart){
+
+
+            ExoPlayerView(reels.video!!)
+
             Column (horizontalAlignment = Alignment.End,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 150.dp, end = 15.dp)){
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 150.dp, end = 15.dp)){
+
                 Column (horizontalAlignment = Alignment.CenterHorizontally){
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription =""
-                            ,modifier = Modifier.size(36.dp))
+                        IconButton(onClick = { /*TODO*/ }) {
+
+                            Icon(imageVector = Icons.Filled.FavoriteBorder,
+                                contentDescription =""
+                                ,modifier = Modifier.size(36.dp)
+                                ,tint = Color.White)
+                        }
+                        Text(text = "10 bin ",
+                            color = Color.White)
                     }
-                    Text(text = "10 bin ")
-                }
+
                 Spacer(modifier = Modifier.height(10.dp))
+
                 Column (horizontalAlignment = Alignment.CenterHorizontally){
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(painter = painterResource(id = R.drawable.comment_icon), contentDescription =""
-                            ,modifier = Modifier.size(30.dp))
+
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(painter = painterResource(id = R.drawable.comment_icon)
+                                ,contentDescription =""
+                                ,modifier = Modifier.size(30.dp)
+                                ,tint = Color.White)
+                        }
+
+                        Text(text = "500",
+                            color = Color.White)
                     }
-                    Text(text = "500")
-                }
+
                 Spacer(modifier = Modifier.height(10.dp))
+
                 Column (horizontalAlignment = Alignment.CenterHorizontally){
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription =""
-                            ,modifier = Modifier.size(32.dp))
+
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(imageVector = Icons.AutoMirrored.Filled.Send
+                                ,contentDescription =""
+                                ,modifier = Modifier.size(32.dp)
+                                ,tint = Color.White)
+                        }
+
+                        Text(text = "5.000",
+                            color = Color.White)
                     }
-                    Text(text = "5.000")
+                }
+                Column {
+                    Row (modifier = Modifier.padding(start = 15.dp)){
+
+                        AsyncImage(
+                            model = user.profilePhoto,
+                            contentDescription = "",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(45.dp))
+
+                        TextButton(onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = Color.White
+                        )) {
+                            Text(text = user.userName!!,
+                                fontSize = 16.sp)
+                        }
+
+                        OutlinedButton(onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = Color.White
+                        )) {
+                            Text(text = "Takip Et")
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Text(text = reels.videoDescription!!,
+                        modifier = Modifier.padding(start = 15.dp),
+                        color = Color.White)
                 }
             }
-            Column {
-                Row (modifier = Modifier.padding(start = 15.dp)){
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(45.dp)
-                    )
-                    TextButton(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = Color.Black
-                    )) {
-                        Text(text = "pageName", fontSize = 16.sp)
-                    }
-                    OutlinedButton(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = Color.Black
-                    )) {
-                        Text(text = "Takip Et")
-                    }
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(text = "Batı avustrulyada bulunan Hillier Gölü pembe...", modifier = Modifier.padding(start = 15.dp))
-            }
-        }
+
     }
-        }
 
 
+}
 
-
-const val EXAMPLE_VIDEO_URI = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-
+@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun ExoPlayerView(uri: String) {
     val context = LocalContext.current
 
     val exoPlayer = remember { ExoPlayer.Builder(context).build() }
-
     val mediaSource = remember(uri) {
         MediaItem.fromUri(uri)
     }
@@ -138,7 +218,7 @@ fun ExoPlayerView(uri: String) {
     LaunchedEffect(mediaSource) {
         exoPlayer.setMediaItem(mediaSource)
         exoPlayer.prepare()
-        exoPlayer.play()
+        exoPlayer.playWhenReady
     }
 
     DisposableEffect(Unit) {
@@ -167,3 +247,14 @@ fun ExoPlayerView(uri: String) {
             }
     )
 }
+
+
+
+
+
+
+
+
+
+
+

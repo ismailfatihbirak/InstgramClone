@@ -86,7 +86,9 @@ fun EditProfilePage(navController: NavController,viewModel:EditProfilePageViewMo
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically){
-            IconButton(onClick = {  }) {
+            IconButton(onClick = {
+                navController.navigate("homepage")
+            }) {
                 Icon(Icons.Default.Clear, contentDescription = "", modifier = Modifier.size(40.dp))
             }
             Text(text = "Edit Profile", fontSize = 16.sp)

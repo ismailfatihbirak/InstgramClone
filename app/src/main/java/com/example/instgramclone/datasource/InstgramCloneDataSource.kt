@@ -27,6 +27,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.instgramclone.R
 import com.example.instgramclone.model.Post
+import com.example.instgramclone.model.Reel
 import com.example.instgramclone.model.User
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -127,8 +128,11 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
     suspend fun addStory(newStory: User,authId: String) = withContext(Dispatchers.IO) {
         collectionUser.document(authId).update("story", newStory.story)
     }
+    suspend fun addReels(newReels: Reel,authId: String) = withContext(Dispatchers.IO) {
+        collectionUser.document(authId).update("reels", FieldValue.arrayUnion(newReels))
+    }
 
-    suspend fun homePagePostList(): List<User> = suspendCoroutine { continuation ->
+    suspend fun homePagePostReelsList(): List<User> = suspendCoroutine { continuation ->
         val liste = ArrayList<User>()
         collectionUser.get().addOnSuccessListener { snapshot ->
             for (document in snapshot.documents) {
@@ -140,19 +144,26 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
             continuation.resumeWithException(exception)
         }
     }
-
-    suspend fun homePageStoryList(): List<User> = suspendCoroutine { continuation ->
-        val liste = ArrayList<User>()
+    suspend fun ReelsList(): List<Reel> = suspendCoroutine { continuation ->
+        val liste = ArrayList<Reel>()
         collectionUser.get().addOnSuccessListener { snapshot ->
             for (document in snapshot.documents) {
                 val user = document.toObject(User::class.java)
-                user?.let { liste.add(it) }
+                val aa = user!!.reels
+                if (aa != null) {
+                    for (i in aa) {
+                        liste.add(i)
+                    }
+                }
             }
             continuation.resume(liste)
         }.addOnFailureListener { exception ->
             continuation.resumeWithException(exception)
         }
     }
+
+
+
 
 
 

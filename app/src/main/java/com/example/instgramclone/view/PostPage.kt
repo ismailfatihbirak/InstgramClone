@@ -61,6 +61,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.instgramclone.R
 import com.example.instgramclone.model.Post
+import com.example.instgramclone.model.Reel
 import com.example.instgramclone.model.User
 import com.example.instgramclone.viewmodel.PostPageViewModel
 import com.google.firebase.Firebase
@@ -87,6 +88,7 @@ fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
     val authId = auth.currentUser?.uid
     val newPost = Post(downloadUri, null, null, photoDescription)
     val newStory = User(authId,null,null,null,null,null,null,downloadUri,null,null)
+    val newReels = Reel(downloadUri,null,null,photoDescription)
 
     LaunchedEffect(mediaSelected) {
         uri?.let { viewModel.uploadPostPhoto(it,"postmedia") }
@@ -149,7 +151,7 @@ fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
                 when(selectedTabIndex.value){
                     0->{viewModel.addPost(newPost,authId!!)}
                     1->{viewModel.addStory(newStory,authId!!)}
-                    2->{}
+                    2->{viewModel.addReels(newReels,authId!!)}
                 }
 
             }
