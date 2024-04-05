@@ -6,6 +6,8 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.Settings.Global.getString
 import android.util.Log
@@ -144,6 +146,23 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
             continuation.resumeWithException(exception)
         }
     }
+    suspend fun myProfileInformation(authId: String): User = suspendCoroutine { continuation ->
+        collectionUser.document(authId).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val userData = document.toObject(User::class.java)
+                    continuation.resume(userData!!)
+                } else {
+                    Log.d(TAG, "No such document")
+                    continuation.resumeWithException(Exception("No such document"))
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+                continuation.resumeWithException(exception)
+            }
+    }
+
     suspend fun ReelsList(): List<Reel> = suspendCoroutine { continuation ->
         val liste = ArrayList<Reel>()
         collectionUser.get().addOnSuccessListener { snapshot ->

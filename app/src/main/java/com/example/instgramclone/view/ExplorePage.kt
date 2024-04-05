@@ -87,28 +87,9 @@ fun ExplorePage(navController: NavController) {
             ) {
                 item{
                     Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "",
-                        modifier = Modifier.size(145.dp).padding(bottom = 2.dp))
+                        modifier = Modifier.size(138.dp).padding(bottom = 2.dp))
                 }
-                item{
-                    Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "",
-                        modifier = Modifier.size(145.dp).padding(bottom = 2.dp))
-                }
-                item{
-                    Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "",
-                        modifier = Modifier.size(145.dp).padding(bottom = 2.dp))
-                }
-                item{
-                    Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "",
-                        modifier = Modifier.size(145.dp).padding(bottom = 2.dp))
-                }
-                item{
-                    Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "",
-                        modifier = Modifier.size(145.dp).padding(bottom = 2.dp))
-                }
-                item{
-                    Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "",
-                        modifier = Modifier.size(145.dp).padding(bottom = 2.dp))
-                }
+
 
             }
         }

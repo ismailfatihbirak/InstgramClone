@@ -28,6 +28,7 @@ import com.example.instgramclone.view.SignUpPage2
 import com.example.instgramclone.view.StoryDetailPage
 import com.example.instgramclone.viewmodel.EditProfilePageViewModel
 import com.example.instgramclone.viewmodel.HomePageViewModel
+import com.example.instgramclone.viewmodel.MyProfileViewModel
 import com.example.instgramclone.viewmodel.PostPageViewModel
 import com.example.instgramclone.viewmodel.ReelsPageViewModel
 import com.example.instgramclone.viewmodel.SignInPageViewModel
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PageTransations() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "signuppage") {
+    NavHost(navController, startDestination = "explorepage") {
         composable("signuppage") { backStackEntry ->
             val viewModel = hiltViewModel<SignUpPage2ViewModel>()
             SignUpPage(navController,viewModel)
@@ -81,7 +82,8 @@ fun PageTransations() {
             ExplorePage(navController)
         }
         composable("myprofilepage") { backStackEntry ->
-            MyProfilePage(navController)
+            val viewModel = hiltViewModel<MyProfileViewModel>()
+            MyProfilePage(navController,viewModel)
         }
         composable("postpage") { backStackEntry ->
             val viewModel = hiltViewModel<PostPageViewModel>()

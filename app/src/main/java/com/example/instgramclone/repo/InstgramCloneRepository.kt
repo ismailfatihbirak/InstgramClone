@@ -1,6 +1,7 @@
 package com.example.instgramclone.repo
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import com.example.instgramclone.datasource.InstgramCloneDataSource
 import com.example.instgramclone.model.Post
@@ -18,4 +19,5 @@ class InstgramCloneRepository(var insdts:InstgramCloneDataSource) {
     suspend fun homePagePostReelsList() : List<User> = insdts.homePagePostReelsList()
     suspend fun addReels(newReels: Reel, authId: String) =insdts.addReels(newReels, authId)
     suspend fun ReelsList(): List<Reel> = insdts.ReelsList()
+    suspend fun myProfileInformation(authId: String):User = insdts.myProfileInformation(authId)
 }
