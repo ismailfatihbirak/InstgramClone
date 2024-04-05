@@ -181,6 +181,21 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         }
     }
 
+    suspend fun ExplorePagePostList(): List<Post> = suspendCoroutine { continuation ->
+        val liste = ArrayList<Post>()
+        collectionUser.get().addOnSuccessListener { snapshot ->
+            for (document in snapshot.documents) {
+                val user = document.toObject(User::class.java)
+                for (i in user?.posts ?: emptyList()) {
+                    liste.add(i)
+                }
+            }
+            continuation.resume(liste)
+        }.addOnFailureListener { exception ->
+            continuation.resumeWithException(exception)
+        }
+    }
+
 
 
 

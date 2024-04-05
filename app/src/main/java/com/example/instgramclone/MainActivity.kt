@@ -27,6 +27,7 @@ import com.example.instgramclone.view.SignUpPage
 import com.example.instgramclone.view.SignUpPage2
 import com.example.instgramclone.view.StoryDetailPage
 import com.example.instgramclone.viewmodel.EditProfilePageViewModel
+import com.example.instgramclone.viewmodel.ExplerePageViewModel
 import com.example.instgramclone.viewmodel.HomePageViewModel
 import com.example.instgramclone.viewmodel.MyProfileViewModel
 import com.example.instgramclone.viewmodel.PostPageViewModel
@@ -79,7 +80,8 @@ fun PageTransations() {
             HomePage(navController,viewModel)
         }
         composable("explorepage") { backStackEntry ->
-            ExplorePage(navController)
+            val viewModel = hiltViewModel<ExplerePageViewModel>()
+            ExplorePage(navController,viewModel)
         }
         composable("myprofilepage") { backStackEntry ->
             val viewModel = hiltViewModel<MyProfileViewModel>()
