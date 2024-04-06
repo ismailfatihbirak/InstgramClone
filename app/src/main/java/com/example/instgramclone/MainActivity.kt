@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PageTransations() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "explorepage") {
+    NavHost(navController, startDestination = "postpage") {
         composable("signuppage") { backStackEntry ->
             val viewModel = hiltViewModel<SignUpPage2ViewModel>()
             SignUpPage(navController,viewModel)

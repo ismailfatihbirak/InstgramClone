@@ -25,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,6 +61,17 @@ fun SignInPage(navController: NavController,viewModel: SignInPageViewModel) {
     var password by remember { mutableStateOf(value = "") }
     var showPassword by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
+    var emailAuthControl by remember { mutableStateOf(false) }
+    emailAuthControl = viewModel.emailAuthControl
+
+    if (emailAuthControl){
+        navController.navigate("editprofilepage")
+        Toast.makeText(
+            context,
+            "login successful",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 
     Column (
         modifier = Modifier.padding(all=30.dp),
@@ -90,11 +103,7 @@ fun SignInPage(navController: NavController,viewModel: SignInPageViewModel) {
         BlueButton(
             onClick = {
                 viewModel.emailAuthentication(email, password, context)
-                if (viewModel.emailAuthControl){
-                    navController.navigate("editprofilepage")
-                }
-
-                 },
+                      },
             text = "Log in")
     }
 }

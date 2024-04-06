@@ -74,12 +74,27 @@ fun SignUpPage2(navController: NavController,viewModel:SignUpPage2ViewModel) {
     val launcher = rememberFirebaseAuthLauncher(
         onAuthComplete = { result ->
             user = result.user
-            navController.navigate("homepage")
+            navController.navigate("editprofilepage")
         },
         onAuthError = {
             user = null
         }
     )
+
+    var emailAuthControl by remember { mutableStateOf(false) }
+    emailAuthControl = viewModel.emailAuthControl
+    if (emailAuthControl){
+        navController.navigate("signinpage")
+        Toast.makeText(
+            LocalContext.current,
+            "sign up successful",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+
+
+
     Column (
         modifier = Modifier.padding(all=30.dp),
         verticalArrangement = Arrangement.Center,
@@ -112,9 +127,6 @@ fun SignUpPage2(navController: NavController,viewModel:SignUpPage2ViewModel) {
         BlueButton(
             onClick = {
                 viewModel.emailAuthentication(email, password, context)
-                if (viewModel.emailAuthControl){
-                    navController.navigate("signinpage")
-                }
                       },
             text = "Sign Up")
         Spacer(modifier = Modifier.height(40.dp))

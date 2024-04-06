@@ -1,6 +1,7 @@
 package com.example.instgramclone.view
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -80,6 +81,7 @@ import java.lang.reflect.Modifier
 fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
     var auth:FirebaseAuth
     auth = Firebase.auth
+    val context = LocalContext.current
 
     var photoDescription by remember { mutableStateOf("") }
     var uri by remember { mutableStateOf<Uri?>(null) }
@@ -149,9 +151,26 @@ fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
                     .padding(all = 15.dp))
             Button(onClick = {
                 when(selectedTabIndex.value){
-                    0->{viewModel.addPost(newPost,authId!!)}
-                    1->{viewModel.addStory(newStory,authId!!)}
-                    2->{viewModel.addReels(newReels,authId!!)}
+                    0->{viewModel.addPost(newPost,authId!!)
+                        Toast.makeText(
+                            context,
+                            "Post Successful",
+                            Toast.LENGTH_SHORT
+                        ).show()}
+                    1->{viewModel.addStory(newStory,authId!!)
+                        Toast.makeText(
+                            context,
+                            "Story Successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    2->{viewModel.addReels(newReels,authId!!)
+                        Toast.makeText(
+                            context,
+                            "Reels Successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
 
             }

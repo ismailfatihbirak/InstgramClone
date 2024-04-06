@@ -62,7 +62,7 @@ fun SignUpPage(navController: NavController,viewModel: SignUpPage2ViewModel) {
     val launcher = rememberFirebaseAuthLauncher(
         onAuthComplete = { result ->
             user = result.user
-            navController.navigate("homepage")
+            navController.navigate("editprofilepage")
         },
         onAuthError = {
             user = null
