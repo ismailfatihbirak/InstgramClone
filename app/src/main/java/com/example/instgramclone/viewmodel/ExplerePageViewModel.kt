@@ -12,9 +12,15 @@ import javax.inject.Inject
 @HiltViewModel
 class ExplerePageViewModel @Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
     var postList = MutableLiveData<List<Post>>()
+    var searchList = MutableLiveData<ArrayList<User>>()
     fun ExplorePagePostList(){
         viewModelScope.launch {
             postList.value = insrepo.ExplorePagePostList()
+        }
+    }
+    fun ExplorePageSearchList(searchText:String){
+        viewModelScope.launch {
+            searchList.value = insrepo.ExplorePageSearchList(searchText)
         }
     }
 }

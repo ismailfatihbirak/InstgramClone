@@ -21,4 +21,5 @@ class InstgramCloneRepository(var insdts:InstgramCloneDataSource) {
     suspend fun ReelsList(): List<Reel> = insdts.ReelsList()
     suspend fun myProfileInformation(authId: String):User = insdts.myProfileInformation(authId)
     suspend fun ExplorePagePostList(): List<Post> =insdts.ExplorePagePostList()
+    suspend fun ExplorePageSearchList(searchText:String): ArrayList<User> =insdts.ExplorePageSearchList(searchText)
 }

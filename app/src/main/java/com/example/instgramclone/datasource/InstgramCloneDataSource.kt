@@ -196,6 +196,23 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         }
     }
 
+    suspend fun ExplorePageSearchList(searchText:String): ArrayList<User> = suspendCoroutine { continuation ->
+        val liste = ArrayList<User>()
+        collectionUser.get().addOnSuccessListener { snapshot ->
+            for (document in snapshot.documents) {
+                val user = document.toObject(User::class.java)
+                user?.let {
+                    if(user.userName!!.lowercase().contains(searchText.lowercase())){
+                        liste.add(user)
+                    }
+                }
+            }
+            continuation.resume(liste)
+        }.addOnFailureListener { exception ->
+            continuation.resumeWithException(exception)
+        }
+    }
+
 
 
 
