@@ -255,8 +255,6 @@ fun MyProfileTabExample(photoList : List<Post>,reelList: List<Reel>,viewModel: M
                                 .size(138.dp)
                                 .padding(bottom = 2.dp))
                     }
-
-
                 }
             }
             1 -> {
@@ -278,14 +276,12 @@ fun MyProfileTabExample(photoList : List<Post>,reelList: List<Reel>,viewModel: M
                             }
                         }
                     }
-
                 }
-
             }
         }
     }
 }
-
+@Composable
 fun getVideoPreviewImage(videoUrl: String): Bitmap? {
     val retriever = MediaMetadataRetriever()
     return try {

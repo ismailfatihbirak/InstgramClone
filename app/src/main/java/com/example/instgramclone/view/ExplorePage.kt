@@ -2,6 +2,7 @@ package com.example.instgramclone.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,6 +71,9 @@ import coil.compose.AsyncImage
 import com.example.instgramclone.R
 import com.example.instgramclone.model.User
 import com.example.instgramclone.viewmodel.ExplerePageViewModel
+import com.google.gson.Gson
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,13 +118,23 @@ fun ExplorePage(navController: NavController,viewModel: ExplerePageViewModel) {
                     if (newText.isNotBlank()){
                         viewModel.ExplorePageSearchList(newText)
                     }
-                    searchResults.value.removeIf { newText.isBlank() }
+                    searchResults.value.removeIf { newText.isBlank() || newText.isNullOrEmpty() }
                 })
 
             if (searchResults.value.isNotEmpty()){
                 LazyColumn {
                     items(searchResults.value) { user ->
-                        UserCard(user = user)
+                        val userJson = Gson().toJson(user)
+                        Column (modifier = Modifier.clickable {
+                            navController.navigate("profilepage/${
+                                URLEncoder.encode(
+                                    userJson,
+                                    StandardCharsets.UTF_8.toString()
+                                )
+                            }")
+                        }){
+                            UserCard(user = user)
+                        }
                     }
                 }
             }else{

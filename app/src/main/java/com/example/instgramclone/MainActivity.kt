@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.instgramclone.model.User
 import com.example.instgramclone.ui.theme.InstgramCloneTheme
 import com.example.instgramclone.view.EditProfilePage
 import com.example.instgramclone.view.ExplorePage
@@ -35,6 +36,7 @@ import com.example.instgramclone.viewmodel.ReelsPageViewModel
 import com.example.instgramclone.viewmodel.SignInPageViewModel
 import com.example.instgramclone.viewmodel.SignUpPage2ViewModel
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -91,8 +93,13 @@ fun PageTransations() {
             val viewModel = hiltViewModel<PostPageViewModel>()
             PostPage(navController,viewModel)
         }
-        composable("profilepage") { backStackEntry ->
-            ProfilePage(navController)
+        composable("profilepage/{user}",
+            arguments= listOf(
+                navArgument("user") {type = NavType.StringType}
+            )) { backStackEntry ->
+            val json = backStackEntry.arguments!!.getString("user")
+            val user = Gson().fromJson(json,User::class.java)
+            ProfilePage(navController,user)
         }
         composable("reelspage") { backStackEntry ->
             val viewModel = hiltViewModel<ReelsPageViewModel>()
