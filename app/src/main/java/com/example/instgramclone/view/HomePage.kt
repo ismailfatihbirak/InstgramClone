@@ -65,6 +65,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.instgramclone.R
+import com.example.instgramclone.model.User
 import com.example.instgramclone.viewmodel.HomePageViewModel
 import kotlinx.coroutines.delay
 import java.net.URLEncoder
@@ -149,13 +150,25 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
                             if (user.story != null){
                                 Card(
                                     modifier = Modifier
-                                        .padding(all = 8.dp).
-                                        clickable {
-                                            navController.navigate("storydetailpage/" +
-                                                    "${URLEncoder.encode(user.profilePhoto, 
-                                                        StandardCharsets.UTF_8.toString())}/" +
-                                                    "${URLEncoder.encode(user.story, StandardCharsets.UTF_8.toString())}/" +
-                                                    "${user.userName}") }
+                                        .padding(all = 8.dp)
+                                        .clickable {
+                                            navController.navigate(
+                                                "storydetailpage/" +
+                                                        "${
+                                                            URLEncoder.encode(
+                                                                user.profilePhoto,
+                                                                StandardCharsets.UTF_8.toString()
+                                                            )
+                                                        }/" +
+                                                        "${
+                                                            URLEncoder.encode(
+                                                                user.story,
+                                                                StandardCharsets.UTF_8.toString()
+                                                            )
+                                                        }/" +
+                                                        "${user.userName}"
+                                            )
+                                        }
                                     , colors = CardDefaults.cardColors(
                                         containerColor = Color.White
                                     )) {
@@ -177,88 +190,7 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
                     )
                 }
             }
-            LazyColumn {
-                itemsIndexed(
-                    items = homePageList.value ?: emptyList(),
-                    itemContent = { userIndex, user ->
-                        user.posts?.let { postList ->
-                            postList.forEachIndexed { postIndex, post ->
-                                Card(colors = CardDefaults.cardColors(
-                                    containerColor = Color.White
-                                )) {
-                                    Column {
-                                        Row(
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(start = 10.dp, end = 10.dp, top = 5.dp)) {
-                                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                                AsyncImage(
-                                                    model = user!!.profilePhoto,
-                                                    contentDescription = "",
-                                                    contentScale = ContentScale.Crop,
-                                                    modifier = Modifier
-                                                        .clip(CircleShape)
-                                                        .size(50.dp))
-                                                Spacer(modifier = Modifier.width(10.dp))
-                                                Text(
-                                                    text = user.userName!!,
-                                                    fontSize = 14.sp)
-                                            }
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.MoreVert,
-                                                    contentDescription = "",
-                                                    Modifier.size(24.dp)
-                                                )
-                                            }
-                                        }
-                                        AsyncImage(
-                                            model = post!!.photo,
-                                            contentDescription = "",
-                                            modifier = Modifier.size(450.dp,450.dp))
-                                        Row {
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.FavoriteBorder,
-                                                    contentDescription = "",
-                                                    Modifier.size(29.dp)
-                                                )
-                                            }
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    painter = painterResource(id = R.drawable.comment_icon),
-                                                    contentDescription = "",
-                                                    Modifier.size(24.dp))
-                                            }
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Send,
-                                                    contentDescription = "",
-                                                    Modifier.size(24.dp)
-                                                )
-                                            }
-
-                                        }
-                                        Text(text = "liked by daniel and 905,325 others", fontSize = 14.sp,
-                                            modifier = Modifier.padding(start = 12.dp))
-                                        Text(text = post.photoDescription!!, fontSize = 14.sp,
-                                            modifier = Modifier.padding(start = 12.dp))
-                                        TextButton(onClick = { /*TODO*/ }) {
-                                            Text(text = "view all comments", fontSize = 14.sp, color = colorResource(
-                                                id = R.color.CommentsAllText
-                                            ))
-                                        }
-
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                )
-            }
+            LazyColumnHomepage(homePageList = homePageList.value)
         }
 
     }
@@ -266,8 +198,6 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
 
 
 }
-
-
 
 
 
@@ -319,108 +249,6 @@ fun CustomDrawer(id:Int) {
 
             }
     )
-}
-
-@Composable
-fun Item() {
-    Card(
-        modifier = Modifier
-            .padding(all = 8.dp)
-        , colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )) {
-        Column (horizontalAlignment = Alignment.CenterHorizontally){
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(77.dp)
-            )
-            Text(
-                text = "daniel",
-                fontSize = 12.sp, modifier = Modifier.padding(top = 6.dp))
-        }
-    }
-
-}
-
-@Composable
-fun Item2() {
-    Card(colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )) {
-            Column {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp, end = 10.dp, top = 5.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_background),
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(50.dp)
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = "daniel",
-                            fontSize = 14.sp)
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.MoreVert,
-                            contentDescription = "",
-                            Modifier.size(24.dp)
-                        )
-                    }
-                }
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "",
-                    modifier = Modifier.size(450.dp,450.dp))
-                Row {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.FavoriteBorder,
-                            contentDescription = "",
-                            Modifier.size(29.dp)
-                        )
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.comment_icon),
-                            contentDescription = "",
-                            Modifier.size(24.dp))
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Send,
-                            contentDescription = "",
-                            Modifier.size(24.dp)
-                        )
-                    }
-
-                }
-                Text(text = "liked by daniel and 905,325 others", fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 12.dp))
-                Text(text = "daniel photo description", fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 12.dp))
-                TextButton(onClick = { /*TODO*/ }) {
-                    Text(text = "view all comments", fontSize = 14.sp, color = colorResource(
-                        id = R.color.CommentsAllText
-                    ))
-                }
-
-
-            }
-        }
-
 }
 sealed class BottomNavItem(
     var title: String,
@@ -517,6 +345,92 @@ fun RowScope.AddItem(
             indicatorColor = Color.White
         )
     )
+}
+
+@Composable
+fun LazyColumnHomepage(homePageList:List<User>) {
+    LazyColumn {
+        itemsIndexed(
+            items = homePageList ?: emptyList(),
+            itemContent = { userIndex, user ->
+                user.posts?.let { postList ->
+                    postList.forEachIndexed { postIndex, post ->
+                        Card(colors = CardDefaults.cardColors(
+                            containerColor = Color.White
+                        )) {
+                            Column {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 10.dp, end = 10.dp, top = 5.dp)) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        AsyncImage(
+                                            model = user!!.profilePhoto,
+                                            contentDescription = "",
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .clip(CircleShape)
+                                                .size(50.dp))
+                                        Spacer(modifier = Modifier.width(10.dp))
+                                        Text(
+                                            text = user.userName!!,
+                                            fontSize = 14.sp)
+                                    }
+                                    IconButton(onClick = { /*TODO*/ }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.MoreVert,
+                                            contentDescription = "",
+                                            Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+                                AsyncImage(
+                                    model = post!!.photo,
+                                    contentDescription = "",
+                                    modifier = Modifier.size(450.dp,450.dp))
+                                Row {
+                                    IconButton(onClick = { /*TODO*/ }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.FavoriteBorder,
+                                            contentDescription = "",
+                                            Modifier.size(29.dp)
+                                        )
+                                    }
+                                    IconButton(onClick = { /*TODO*/ }) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.comment_icon),
+                                            contentDescription = "",
+                                            Modifier.size(24.dp))
+                                    }
+                                    IconButton(onClick = { /*TODO*/ }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Send,
+                                            contentDescription = "",
+                                            Modifier.size(24.dp)
+                                        )
+                                    }
+
+                                }
+                                Text(text = "liked by daniel and 905,325 others", fontSize = 14.sp,
+                                    modifier = Modifier.padding(start = 12.dp))
+                                Text(text = post.photoDescription!!, fontSize = 14.sp,
+                                    modifier = Modifier.padding(start = 12.dp))
+                                TextButton(onClick = { /*TODO*/ }) {
+                                    Text(text = "view all comments", fontSize = 14.sp, color = colorResource(
+                                        id = R.color.CommentsAllText
+                                    ))
+                                }
+
+
+                            }
+                        }
+                    }
+                }
+            }
+        )
+    }
 }
 
 

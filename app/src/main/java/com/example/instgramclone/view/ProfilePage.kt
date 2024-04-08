@@ -153,10 +153,10 @@ fun ProfilePage(navController: NavController,user: User) {
                 }
 
             }
-            Text(text = user.name.toString(),
+            Text(text = user.name.toString().replace("+"," "),
                 fontSize = 14.sp,
                 modifier = Modifier.padding(start = 10.dp))
-            Text(text = user.bio.toString(),
+            Text(text = user.bio.toString().replace("+"," "),
                 fontSize = 14.sp,
                 modifier = Modifier.padding(start = 10.dp))
             Spacer(modifier = Modifier.height(20.dp))
@@ -227,8 +227,7 @@ fun TabExample(photoList : List<Post>, reelList: List<Reel>) {
             1 -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
-
-                ) {
+                    ) {
                     var previewBitmap = mutableStateOf<Bitmap?>(null)
                     items(reelList.size){
                         val reel = reelList[it]

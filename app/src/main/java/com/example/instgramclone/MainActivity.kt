@@ -14,10 +14,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.instgramclone.model.Post
 import com.example.instgramclone.model.User
 import com.example.instgramclone.ui.theme.InstgramCloneTheme
 import com.example.instgramclone.view.EditProfilePage
 import com.example.instgramclone.view.ExplorePage
+import com.example.instgramclone.view.ExplorePageDetail
 import com.example.instgramclone.view.HomePage
 import com.example.instgramclone.view.MyProfilePage
 import com.example.instgramclone.view.PostPage
@@ -37,6 +39,7 @@ import com.example.instgramclone.viewmodel.SignInPageViewModel
 import com.example.instgramclone.viewmodel.SignUpPage2ViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -116,6 +119,14 @@ fun PageTransations() {
             val photo = backStackEntry.arguments?.getString("photo")!!
             val userName = backStackEntry.arguments?.getString("userName")!!
             StoryDetailPage(navController,profilePhoto,photo,userName)
+        }
+        composable("explorepagedetail/{index}",
+            arguments= listOf(
+                navArgument("index") {type = NavType.IntType},
+            )) { backStackEntry ->
+            val viewModel = hiltViewModel<HomePageViewModel>()
+            val index = backStackEntry.arguments!!.getInt("index",0)
+            ExplorePageDetail(index,viewModel)
         }
 
 
