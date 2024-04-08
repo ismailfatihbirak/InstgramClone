@@ -94,9 +94,11 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {
+                        navController.navigate("camerapage")
+                    }) {
                         Icon(
-                            imageVector = Icons.Filled.FavoriteBorder,
+                            painter = painterResource(id = R.drawable.camera_icon),
                             contentDescription = "Localized description",
                             Modifier.size(32.dp)
                         )

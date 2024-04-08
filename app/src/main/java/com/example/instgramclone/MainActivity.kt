@@ -17,6 +17,7 @@ import androidx.navigation.navArgument
 import com.example.instgramclone.model.Post
 import com.example.instgramclone.model.User
 import com.example.instgramclone.ui.theme.InstgramCloneTheme
+import com.example.instgramclone.view.CameraPage
 import com.example.instgramclone.view.EditProfilePage
 import com.example.instgramclone.view.ExplorePage
 import com.example.instgramclone.view.ExplorePageDetail
@@ -63,7 +64,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PageTransations() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "explorepage") {
+    NavHost(navController, startDestination = "signuppage") {
         composable("signuppage") { backStackEntry ->
             val viewModel = hiltViewModel<SignUpPage2ViewModel>()
             SignUpPage(navController,viewModel)
@@ -128,7 +129,10 @@ fun PageTransations() {
             val index = backStackEntry.arguments!!.getInt("index",0)
             ExplorePageDetail(index,viewModel)
         }
-
+        composable("camerapage") { backStackEntry ->
+            val viewModel = hiltViewModel<PostPageViewModel>()
+            CameraPage(viewModel)
+        }
 
     }
 }
