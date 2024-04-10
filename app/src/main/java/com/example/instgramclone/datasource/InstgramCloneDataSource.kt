@@ -109,7 +109,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
 
     suspend fun saveProfileInformation(authId:String, profilePhoto:String, userName:String, name:String, bio:String) =
         withContext(Dispatchers.IO){
-            val newUser = User(authId,profilePhoto,userName,name,bio,null,null,null,null)
+            val newUser = User(authId,profilePhoto,userName,name,bio,null,null,null,null,null)
             collectionUser.document(authId).set(newUser)
         }
 
@@ -212,6 +212,19 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
             continuation.resumeWithException(exception)
         }
     }
+
+    suspend fun addLike(newUser: User, postList: List<Post>, postIndex: Int, uAuthId:String) = withContext(Dispatchers.IO) {
+        val updatePostList: ArrayList<Post> = ArrayList(postList)
+        val list = ArrayList<User>()
+        list.add(newUser)
+        updatePostList[postIndex].like?.let { existingLikes ->
+            existingLikes.add(newUser)
+        } ?: kotlin.run {
+            updatePostList[postIndex].like = list
+        }
+        collectionUser.document(uAuthId).update("posts", updatePostList)
+    }
+
 
 
 

@@ -40,7 +40,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,6 +71,10 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.instgramclone.R
 import com.example.instgramclone.model.User
 import com.example.instgramclone.viewmodel.HomePageViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -76,6 +84,17 @@ import java.nio.charset.StandardCharsets
 fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
     viewModel.homePagePostListfun()
     val homePageList = viewModel.homePageList.observeAsState(listOf())
+
+    lateinit var auth: FirebaseAuth
+    auth = Firebase.auth
+    //var user1 by remember { mutableStateOf<User?>(null) }
+
+    var user1 = viewModel.user1.value
+    LaunchedEffect(auth.currentUser) {
+        auth.currentUser?.uid?.let { userId ->
+            viewModel.myProfileInformation(userId)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -192,7 +211,11 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
                     )
                 }
             }
-            LazyColumnHomepage(homePageList = homePageList.value)
+            user1?.let {
+                LazyColumnHomepage(homePageList = homePageList.value,viewModel,navController,
+                    it
+                )
+            }
         }
 
     }
@@ -350,7 +373,7 @@ fun RowScope.AddItem(
 }
 
 @Composable
-fun LazyColumnHomepage(homePageList:List<User>) {
+fun LazyColumnHomepage(homePageList:List<User>,viewModel:HomePageViewModel,navController: NavController,newUser1: User) {
     LazyColumn {
         itemsIndexed(
             items = homePageList ?: emptyList(),
@@ -393,7 +416,10 @@ fun LazyColumnHomepage(homePageList:List<User>) {
                                     contentDescription = "",
                                     modifier = Modifier.size(450.dp,450.dp))
                                 Row {
-                                    IconButton(onClick = { /*TODO*/ }) {
+                                    IconButton(onClick = {
+                                        val newUser = User(newUser1.authId,newUser1.profilePhoto,newUser1.userName,newUser1.name)
+                                        viewModel.addLike(newUser,postList,postIndex,user.authId!!)
+                                    }) {
                                         Icon(
                                             imageVector = Icons.Filled.FavoriteBorder,
                                             contentDescription = "",
@@ -415,8 +441,20 @@ fun LazyColumnHomepage(homePageList:List<User>) {
                                     }
 
                                 }
-                                Text(text = "liked by daniel and 905,325 others", fontSize = 14.sp,
-                                    modifier = Modifier.padding(start = 12.dp))
+                                TextButton(onClick = {
+                                    val likeJson = Gson().toJson(post.like)
+                                    navController.navigate("likespage/${
+                                        URLEncoder.encode(
+                                            likeJson,
+                                            StandardCharsets.UTF_8.toString()
+                                        )
+                                    }")
+                                }) {
+                                    Text(text = "${post.like?.size ?: 0} user liked",
+                                        fontSize = 14.sp,
+                                        modifier = Modifier.padding(start = 12.dp),
+                                        color = Color.Black)
+                                }
                                 Text(text = post.photoDescription!!, fontSize = 14.sp,
                                     modifier = Modifier.padding(start = 12.dp))
                                 TextButton(onClick = { /*TODO*/ }) {

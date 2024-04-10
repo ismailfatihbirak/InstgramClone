@@ -10,11 +10,11 @@ data class User(
     var reels: List<Reel>? = listOf<Reel>(),
     var story: String? = null,
     var follower: String? = null,
-    var following: String? = null
+    var following: String? = null,
 )
 data class Post(
     var photo:String? = null,
-    var like:List<User>? = listOf<User>(),
+    var like:ArrayList<User>? = arrayListOf<User>(),
     var comment:List<User>? = listOf<User>(),
     var photoDescription:String? = null
 )

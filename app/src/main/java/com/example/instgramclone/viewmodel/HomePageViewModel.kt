@@ -1,8 +1,10 @@
 package com.example.instgramclone.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.instgramclone.model.Post
 import com.example.instgramclone.model.User
 import com.example.instgramclone.repo.InstgramCloneRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,9 +15,20 @@ import javax.inject.Inject
 @HiltViewModel
 class HomePageViewModel @Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
     var homePageList = MutableLiveData<List<User>>()
+    var user1 = mutableStateOf<User?>(null)
     fun homePagePostListfun(){
         viewModelScope.launch {
             homePageList.value = insrepo.homePagePostReelsList()
+        }
+    }
+    fun addLike(newUser: User, postList: List<Post>, postIndex: Int,uAuthId:String){
+        viewModelScope.launch {
+            insrepo.addLike(newUser,postList,postIndex,uAuthId)
+        }
+    }
+    fun myProfileInformation(authId:String){
+        viewModelScope.launch {
+            user1.value = insrepo.myProfileInformation(authId)
         }
     }
 }

@@ -22,6 +22,7 @@ import com.example.instgramclone.view.EditProfilePage
 import com.example.instgramclone.view.ExplorePage
 import com.example.instgramclone.view.ExplorePageDetail
 import com.example.instgramclone.view.HomePage
+import com.example.instgramclone.view.LikesPage
 import com.example.instgramclone.view.MyProfilePage
 import com.example.instgramclone.view.PostPage
 import com.example.instgramclone.view.ProfilePage
@@ -132,6 +133,14 @@ fun PageTransations() {
         composable("camerapage") { backStackEntry ->
             val viewModel = hiltViewModel<PostPageViewModel>()
             CameraPage(viewModel)
+        }
+        composable("likespage/{user}",
+            arguments= listOf(
+                navArgument("user") {type = NavType.StringType}
+            )) { backStackEntry ->
+            val json = backStackEntry.arguments!!.getString("user")
+            val list: List<User> = Gson().fromJson(json, object : TypeToken<List<User>>() {}.type)
+            LikesPage(list,navController)
         }
 
     }
