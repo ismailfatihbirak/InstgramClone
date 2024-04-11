@@ -88,9 +88,9 @@ fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
     var mediaSelected by remember { mutableStateOf(false) }
     val downloadUri = viewModel.downloadUri.observeAsState().value
     val authId = auth.currentUser?.uid
-    val newPost = Post(downloadUri, null, null, photoDescription)
+    val newPost = Post(downloadUri, arrayListOf(), null, photoDescription)
     val newStory = User(authId,null,null,null,null,null,null,downloadUri,null,null)
-    val newReels = Reel(downloadUri,null,null,photoDescription)
+    val newReels = Reel(downloadUri,arrayListOf(),null,photoDescription)
 
     LaunchedEffect(mediaSelected) {
         uri?.let { viewModel.uploadPostPhoto(it,"postmedia") }
