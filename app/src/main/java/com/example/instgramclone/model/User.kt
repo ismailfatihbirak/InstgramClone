@@ -11,11 +11,12 @@ data class User(
     var story: String? = null,
     var follower: String? = null,
     var following: String? = null,
+    var comment: String? = null,
 )
 data class Post(
     var photo:String? = null,
     var like:ArrayList<User>? = arrayListOf<User>(),
-    var comment:List<User>? = listOf<User>(),
+    var comment:ArrayList<User>? = arrayListOf<User>(),
     var photoDescription:String? = null
 )
 

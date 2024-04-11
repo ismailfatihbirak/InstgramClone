@@ -23,4 +23,5 @@ class InstgramCloneRepository(var insdts:InstgramCloneDataSource) {
     suspend fun ExplorePagePostList(): List<Post> =insdts.ExplorePagePostList()
     suspend fun ExplorePageSearchList(searchText:String): ArrayList<User> =insdts.ExplorePageSearchList(searchText)
     suspend fun addLike(newUser: User,postList: List<Post>,postIndex: Int,uAuthId:String) =insdts.addLike(newUser,postList,postIndex,uAuthId)
+    suspend fun addComment(newUser: User, postList: List<Post>, postIndex: Int, uAuthId:String) = insdts.addComment(newUser, postList, postIndex, uAuthId)
 }

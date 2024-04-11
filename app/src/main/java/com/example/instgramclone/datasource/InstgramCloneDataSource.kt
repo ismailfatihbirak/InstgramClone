@@ -224,6 +224,17 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         }
         collectionUser.document(uAuthId).update("posts", updatePostList)
     }
+    suspend fun addComment(newUser: User, postList: List<Post>, postIndex: Int, uAuthId:String) = withContext(Dispatchers.IO) {
+        val updatePostList: ArrayList<Post> = ArrayList(postList)
+        val list = ArrayList<User>()
+        list.add(newUser)
+        updatePostList[postIndex].comment?.let { existingLikes ->
+            existingLikes.add(newUser)
+        } ?: kotlin.run {
+            updatePostList[postIndex].comment = list
+        }
+        collectionUser.document(uAuthId).update("posts", updatePostList)
+    }
 
 
 

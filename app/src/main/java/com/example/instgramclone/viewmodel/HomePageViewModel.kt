@@ -26,6 +26,11 @@ class HomePageViewModel @Inject constructor(var insrepo : InstgramCloneRepositor
             insrepo.addLike(newUser,postList,postIndex,uAuthId)
         }
     }
+    fun addComment(newUser: User, postList: List<Post>, postIndex: Int,uAuthId:String){
+        viewModelScope.launch {
+            insrepo.addComment(newUser,postList,postIndex,uAuthId)
+        }
+    }
     fun myProfileInformation(authId:String){
         viewModelScope.launch {
             user1.value = insrepo.myProfileInformation(authId)
