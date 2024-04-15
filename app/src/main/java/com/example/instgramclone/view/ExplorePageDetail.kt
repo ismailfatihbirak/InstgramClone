@@ -53,7 +53,7 @@ import com.example.instgramclone.viewmodel.HomePageViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExplorePageDetail(index: Int,viewModel: HomePageViewModel) {
-    viewModel.homePagePostListfun()
+    viewModel.getHomePagePostReelsList()
     val homePageList = viewModel.homePageList.observeAsState(listOf())
 
     Scaffold (

@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.instgramclone.R
+import com.example.instgramclone.model.Message
 import com.example.instgramclone.model.Post
 import com.example.instgramclone.model.Reel
 import com.example.instgramclone.model.User
@@ -47,6 +48,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
@@ -113,7 +115,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
             collectionUser.document(authId).set(newUser)
         }
 
-    suspend fun uploadPhoto(uri: Uri,pathString:String): String = withContext(Dispatchers.IO) {
+    suspend fun uploadMedia(uri: Uri,pathString:String): String = withContext(Dispatchers.IO) {
         var storage: FirebaseStorage = Firebase.storage
         val storageRef = storage.reference
         val uuid = UUID.randomUUID()
@@ -134,7 +136,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         collectionUser.document(authId).update("reels", FieldValue.arrayUnion(newReels))
     }
 
-    suspend fun homePagePostReelsList(): List<User> = suspendCoroutine { continuation ->
+    suspend fun getHomePagePostReelsList(): List<User> = suspendCoroutine { continuation ->
         val liste = ArrayList<User>()
         collectionUser.get().addOnSuccessListener { snapshot ->
             for (document in snapshot.documents) {
@@ -146,7 +148,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
             continuation.resumeWithException(exception)
         }
     }
-    suspend fun myProfileInformation(authId: String): User = suspendCoroutine { continuation ->
+    suspend fun saveMyProfileInformation(authId: String): User = suspendCoroutine { continuation ->
         collectionUser.document(authId).get()
             .addOnSuccessListener { document ->
                 if (document != null) {
@@ -163,7 +165,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
             }
     }
 
-    suspend fun ReelsList(): List<Reel> = suspendCoroutine { continuation ->
+    suspend fun getReelsList(): List<Reel> = suspendCoroutine { continuation ->
         val liste = ArrayList<Reel>()
         collectionUser.get().addOnSuccessListener { snapshot ->
             for (document in snapshot.documents) {
@@ -181,7 +183,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         }
     }
 
-    suspend fun ExplorePagePostList(): List<Post> = suspendCoroutine { continuation ->
+    suspend fun getExplorePagePostList(): List<Post> = suspendCoroutine { continuation ->
         val liste = ArrayList<Post>()
         collectionUser.get().addOnSuccessListener { snapshot ->
             for (document in snapshot.documents) {
@@ -196,7 +198,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         }
     }
 
-    suspend fun ExplorePageSearchList(searchText:String): ArrayList<User> = suspendCoroutine { continuation ->
+    suspend fun getExplorePageSearchList(searchText:String): ArrayList<User> = suspendCoroutine { continuation ->
         val liste = ArrayList<User>()
         collectionUser.get().addOnSuccessListener { snapshot ->
             for (document in snapshot.documents) {
@@ -213,7 +215,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         }
     }
 
-    suspend fun addLike(newUser: User, postList: List<Post>, postIndex: Int, uAuthId:String) = withContext(Dispatchers.IO) {
+    suspend fun postAddLike(newUser: User, postList: List<Post>, postIndex: Int, uAuthId:String) = withContext(Dispatchers.IO) {
         val updatePostList: ArrayList<Post> = ArrayList(postList)
         val list = ArrayList<User>()
         list.add(newUser)
@@ -224,7 +226,7 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         }
         collectionUser.document(uAuthId).update("posts", updatePostList)
     }
-    suspend fun addComment(newUser: User, postList: List<Post>, postIndex: Int, uAuthId:String) = withContext(Dispatchers.IO) {
+    suspend fun postAddComment(newUser: User, postList: List<Post>, postIndex: Int, uAuthId:String) = withContext(Dispatchers.IO) {
         val updatePostList: ArrayList<Post> = ArrayList(postList)
         val list = ArrayList<User>()
         list.add(newUser)
@@ -236,7 +238,50 @@ class InstgramCloneDataSource(var collectionUser: CollectionReference) {
         collectionUser.document(uAuthId).update("posts", updatePostList)
     }
 
+    fun sendMessage(senderId: String, receiverId: String, messageText: String) {
+        val message = hashMapOf(
+            "senderId" to senderId,
+            "receiverId" to receiverId,
+            "messageText" to messageText,
+            "timestamp" to FieldValue.serverTimestamp()
+        )
+        FirebaseFirestore.getInstance().collection("messages")
+            .add(message)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "Message sent with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error sending message", e)
+            }
+    }
+    suspend fun getMessages(senderId: String, receiverId: String) : List<Message> = suspendCoroutine { continuation ->
+        val messageList = mutableListOf<Message>()
+        val firstTask = FirebaseFirestore.getInstance().collection("messages")
+            .whereEqualTo("senderId", senderId)
+            .whereEqualTo("receiverId", receiverId)
+            .get()
+        val secondTask = FirebaseFirestore.getInstance().collection("messages")
+            .whereEqualTo("senderId", receiverId)
+            .whereEqualTo("receiverId", senderId)
+            .get()
 
+        CoroutineScope(Dispatchers.IO).launch {
+            val firstResult = firstTask.await()
+            val secondResult = secondTask.await()
+
+            for (document in firstResult.documents) {
+                val message = document.toObject(Message::class.java)
+                messageList.add(message!!)
+            }
+
+            for (document in secondResult.documents) {
+                val message = document.toObject(Message::class.java)
+                messageList.add(message!!)
+            }
+
+            continuation.resume(messageList.sortedBy { it.timestamp })
+        }
+    }
 
 
 

@@ -19,9 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class PostPageViewModel @Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
     var downloadUri = MutableLiveData("")
-    fun uploadPostPhoto(uri: Uri,pathString:String) {
+    fun uploadMedia(uri: Uri,pathString:String) {
         CoroutineScope(Dispatchers.Main).launch {
-            downloadUri.value = insrepo.uploadPhoto(uri,pathString)
+            downloadUri.value = insrepo.uploadMedia(uri,pathString)
         }
     }
     fun addPost(newPost: Post,authId:String){

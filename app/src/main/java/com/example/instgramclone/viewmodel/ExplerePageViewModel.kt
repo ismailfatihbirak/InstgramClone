@@ -13,14 +13,18 @@ import javax.inject.Inject
 class ExplerePageViewModel @Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
     var postList = MutableLiveData<List<Post>>()
     var searchList = MutableLiveData<ArrayList<User>>()
-    fun ExplorePagePostList(){
+    var pastSearchList = MutableLiveData<List<User>>()
+    fun getExplorePagePostList(){
         viewModelScope.launch {
-            postList.value = insrepo.ExplorePagePostList()
+            postList.value = insrepo.getExplorePagePostList()
         }
     }
-    fun ExplorePageSearchList(searchText:String){
+    fun getExplorePageSearchList(searchText:String){
         viewModelScope.launch {
-            searchList.value = insrepo.ExplorePageSearchList(searchText)
+            searchList.value = insrepo.getExplorePageSearchList(searchText)
         }
     }
+
+
+
 }

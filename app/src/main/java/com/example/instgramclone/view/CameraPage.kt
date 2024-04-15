@@ -73,7 +73,7 @@ fun CameraPage(viewModel: PostPageViewModel) {
 
     LaunchedEffect(mediaSelected){
         if (capturedImageUri.path?.isNotEmpty() == true) {
-            viewModel.uploadPostPhoto(capturedImageUri,"postmedia")
+            viewModel.uploadMedia(capturedImageUri,"postmedia")
         }
     }
 

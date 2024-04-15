@@ -3,6 +3,7 @@ package com.example.instgramclone.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.instgramclone.model.Post
 import com.example.instgramclone.model.Reel
 import com.example.instgramclone.model.User
 import com.example.instgramclone.repo.InstgramCloneRepository
@@ -15,13 +16,13 @@ class ReelsPageViewModel @Inject constructor(var insrepo : InstgramCloneReposito
     var reelsList = MutableLiveData<List<Reel>>()
     fun userListfun(){
         viewModelScope.launch {
-            usersList.value = insrepo.homePagePostReelsList()
+            usersList.value = insrepo.getHomePagePostReelsList()
         }
     }
 
-    fun reelsListfun(){
+    fun getReelsList(){
         viewModelScope.launch {
-            reelsList.value = insrepo.ReelsList()
+            reelsList.value = insrepo.getReelsList()
         }
     }
 }

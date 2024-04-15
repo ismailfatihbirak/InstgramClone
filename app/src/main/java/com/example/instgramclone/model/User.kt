@@ -1,5 +1,7 @@
 package com.example.instgramclone.model
 
+import com.google.firebase.Timestamp
+
 data class User(
     var authId: String? = null,
     var profilePhoto: String? = null,
@@ -22,8 +24,13 @@ data class Post(
 
 data class Reel(
     var video:String? = null,
-    var like:List<User>? = listOf<User>(),
-    var comment:List<User>? = listOf<User>(),
+    var like:ArrayList<User>? = arrayListOf<User>(),
+    var comment:ArrayList<User>? = arrayListOf<User>(),
     var videoDescription:String? = null
 )
-
+data class Message(
+    var senderId: String? = null,
+    var receiverId: String? = null,
+    var messageText: String? = null,
+    var timestamp: Timestamp? = null
+)

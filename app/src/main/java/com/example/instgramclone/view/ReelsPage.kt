@@ -1,10 +1,12 @@
 package com.example.instgramclone.view
 
 import android.net.Uri
+import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +35,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,9 +48,13 @@ import androidx.compose.runtime.DisposableEffectResult
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -84,13 +91,15 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.instgramclone.R
 import com.example.instgramclone.viewmodel.ReelsPageViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReelsPage(navController: NavController,viewModel:ReelsPageViewModel) {
     viewModel.userListfun()
-    viewModel.reelsListfun()
+    viewModel.getReelsList()
     val userList = viewModel.usersList.observeAsState(listOf())
     val reelsList = viewModel.reelsList.observeAsState(listOf())
     val pagerState = rememberPagerState(pageCount = {reelsList.value.count()})
@@ -98,7 +107,7 @@ fun ReelsPage(navController: NavController,viewModel:ReelsPageViewModel) {
     VerticalPager(state = pagerState,
         modifier = Modifier.fillMaxSize()) { page ->
 
-        var userIndex = 0
+        var userIndex = 1
 
         DisposableEffect(reelsList.value.lastIndex){
             onDispose {
@@ -112,7 +121,6 @@ fun ReelsPage(navController: NavController,viewModel:ReelsPageViewModel) {
             .fillMaxSize()
             .padding(bottom = 30.dp),
                 contentAlignment = Alignment.BottomStart){
-
 
             ExoPlayerView(reels.video!!)
 
@@ -137,7 +145,9 @@ fun ReelsPage(navController: NavController,viewModel:ReelsPageViewModel) {
 
                 Column (horizontalAlignment = Alignment.CenterHorizontally){
 
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+
+                        }) {
                             Icon(painter = painterResource(id = R.drawable.comment_icon)
                                 ,contentDescription =""
                                 ,modifier = Modifier.size(30.dp)
@@ -194,7 +204,7 @@ fun ReelsPage(navController: NavController,viewModel:ReelsPageViewModel) {
                     }
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Text(text = reels.videoDescription!!,
+                    Text(text = reelsList.value[page].videoDescription!!,
                         modifier = Modifier.padding(start = 15.dp),
                         color = Color.White)
                 }
@@ -209,7 +219,6 @@ fun ReelsPage(navController: NavController,viewModel:ReelsPageViewModel) {
 @Composable
 fun ExoPlayerView(uri: String) {
     val context = LocalContext.current
-
     val exoPlayer = remember { ExoPlayer.Builder(context).build() }
     val mediaSource = remember(uri) {
         MediaItem.fromUri(uri)
@@ -247,7 +256,6 @@ fun ExoPlayerView(uri: String) {
             }
     )
 }
-
 
 
 

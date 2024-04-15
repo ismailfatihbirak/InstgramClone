@@ -16,24 +16,24 @@ import javax.inject.Inject
 class HomePageViewModel @Inject constructor(var insrepo : InstgramCloneRepository) : ViewModel() {
     var homePageList = MutableLiveData<List<User>>()
     var user1 = mutableStateOf<User?>(null)
-    fun homePagePostListfun(){
+    fun getHomePagePostReelsList(){
         viewModelScope.launch {
-            homePageList.value = insrepo.homePagePostReelsList()
+            homePageList.value = insrepo.getHomePagePostReelsList()
         }
     }
     fun addLike(newUser: User, postList: List<Post>, postIndex: Int,uAuthId:String){
         viewModelScope.launch {
-            insrepo.addLike(newUser,postList,postIndex,uAuthId)
+            insrepo.postAddLike(newUser,postList,postIndex,uAuthId)
         }
     }
     fun addComment(newUser: User, postList: List<Post>, postIndex: Int,uAuthId:String){
         viewModelScope.launch {
-            insrepo.addComment(newUser,postList,postIndex,uAuthId)
+            insrepo.postAddComment(newUser,postList,postIndex,uAuthId)
         }
     }
     fun myProfileInformation(authId:String){
         viewModelScope.launch {
-            user1.value = insrepo.myProfileInformation(authId)
+            user1.value = insrepo.saveMyProfileInformation(authId)
         }
     }
 }

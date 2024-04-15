@@ -18,6 +18,8 @@ import com.example.instgramclone.model.Post
 import com.example.instgramclone.model.User
 import com.example.instgramclone.ui.theme.InstgramCloneTheme
 import com.example.instgramclone.view.CameraPage
+import com.example.instgramclone.view.ChatPage
+import com.example.instgramclone.view.ChatPageDetail
 import com.example.instgramclone.view.EditProfilePage
 import com.example.instgramclone.view.ExplorePage
 import com.example.instgramclone.view.ExplorePageDetail
@@ -31,6 +33,7 @@ import com.example.instgramclone.view.SignInPage
 import com.example.instgramclone.view.SignUpPage
 import com.example.instgramclone.view.SignUpPage2
 import com.example.instgramclone.view.StoryDetailPage
+import com.example.instgramclone.viewmodel.ChatPageDetailViewModel
 import com.example.instgramclone.viewmodel.EditProfilePageViewModel
 import com.example.instgramclone.viewmodel.ExplerePageViewModel
 import com.example.instgramclone.viewmodel.HomePageViewModel
@@ -141,6 +144,19 @@ fun PageTransations() {
             val json = backStackEntry.arguments!!.getString("user")
             val list: List<User> = Gson().fromJson(json, object : TypeToken<List<User>>() {}.type)
             LikesPage(list,navController)
+        }
+        composable("chatpage") { backStackEntry ->
+            val viewModel = hiltViewModel<ExplerePageViewModel>()
+            ChatPage(navController, viewModel)
+        }
+        composable("chatpagedetail/{user}",
+            arguments= listOf(
+                navArgument("user") {type = NavType.StringType}
+            )) { backStackEntry ->
+            val viewModel = hiltViewModel<ChatPageDetailViewModel>()
+            val json = backStackEntry.arguments!!.getString("user")
+            val user = Gson().fromJson(json,User::class.java)
+            ChatPageDetail(navController = navController, user = user,viewModel)
         }
 
     }

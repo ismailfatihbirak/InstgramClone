@@ -24,7 +24,7 @@ class EditProfilePageViewModel @Inject constructor(var insrepo : InstgramCloneRe
 
     fun uploadProfilePhoto(uri:Uri,pathString:String) {
         CoroutineScope(Dispatchers.Main).launch {
-            downloadUri.value = insrepo.uploadPhoto(uri,pathString)
+            downloadUri.value = insrepo.uploadMedia(uri,pathString)
         }
     }
 

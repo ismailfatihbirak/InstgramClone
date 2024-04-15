@@ -93,7 +93,7 @@ fun PostPage(navController: NavController,viewModel: PostPageViewModel) {
     val newReels = Reel(downloadUri,arrayListOf(),null,photoDescription)
 
     LaunchedEffect(mediaSelected) {
-        uri?.let { viewModel.uploadPostPhoto(it,"postmedia") }
+        uri?.let { viewModel.uploadMedia(it,"postmedia") }
     }
 
     Scaffold{ innerPadding ->

@@ -81,7 +81,7 @@ import java.nio.charset.StandardCharsets
 fun ExplorePage(navController: NavController,viewModel: ExplerePageViewModel) {
     var text by remember { mutableStateOf("") }
 
-    viewModel.ExplorePagePostList()
+    viewModel.getExplorePagePostList()
     val postList = viewModel.postList.observeAsState(listOf())
 
     val searchResults = viewModel.searchList.observeAsState(arrayListOf())
@@ -117,7 +117,7 @@ fun ExplorePage(navController: NavController,viewModel: ExplerePageViewModel) {
                 onValueChange ={ newText->
                     text = newText
                     if (newText.isNotBlank()){
-                        viewModel.ExplorePageSearchList(newText)
+                        viewModel.getExplorePageSearchList(newText)
                     }
                     searchResults.value.removeIf { newText.isBlank() || newText.isNullOrEmpty() }
                 })
@@ -151,8 +151,8 @@ fun ExplorePage(navController: NavController,viewModel: ExplerePageViewModel) {
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(138.dp)
-                                    .padding(bottom = 2.dp).
-                                    clickable {
+                                    .padding(bottom = 2.dp)
+                                    .clickable {
                                         navController.navigate("explorepagedetail/${it}")
                                     })
                         }
@@ -191,4 +191,6 @@ fun UserCard(user: User) {
         }
     }
 }
+
+
 

@@ -86,7 +86,7 @@ fun MyProfilePage(navController: NavController,viewModel: MyProfileViewModel) {
     user1 = viewModel.user1.value
     LaunchedEffect(auth.currentUser) {
         auth.currentUser?.uid?.let { userId ->
-            viewModel.myProfileInformation(userId)
+            viewModel.saveMyProfileInformation(userId)
         }
     }
 

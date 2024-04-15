@@ -92,7 +92,7 @@ import java.nio.charset.StandardCharsets
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
-    viewModel.homePagePostListfun()
+    viewModel.getHomePagePostReelsList()
     val homePageList = viewModel.homePageList.observeAsState(listOf())
 
     lateinit var auth: FirebaseAuth
@@ -133,7 +133,9 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
                         )
                     }
                     Spacer(modifier = Modifier.width(10.dp))
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {
+                        navController.navigate("chatpage")
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.topbar_messenger_icon),
                             contentDescription = "Localized description",
@@ -479,6 +481,7 @@ fun LazyColumnHomepage(homePageList:List<User>,viewModel:HomePageViewModel,navCo
                                         fontSize = 14.sp,
                                         modifier = Modifier.padding(start = 12.dp),
                                         color = Color.Black)
+
                                 }
                                 Text(text = post.photoDescription!!, fontSize = 14.sp,
                                     modifier = Modifier.padding(start = 12.dp))
