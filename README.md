@@ -14,25 +14,27 @@ InstaClone is a social media application developed with a focus on providing use
 ## Screenshoots
 | Welcome | Sign Up-Sign In | Edit Profile |
 | ------ | ---- | ------ |
-|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2F1-2x.gif?alt=media&token=67697920-a6c4-408b-aa48-669be2ebdcd9" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2F2-2x.gif?alt=media&token=818a45a8-bc58-4f76-9da6-7226aadef994" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Feditprofile-3.gif?alt=media&token=b09c730d-3256-45f7-98e6-b2fcff2da30c" width="250" height="500"/>|
+|<img src="https://i.imgur.com/QihNJZ7.gif" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2F2-2x.gif?alt=media&token=8b93849a-9851-483c-836d-4513b6e066c9" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Feditprofile-3.gif?alt=media&token=2e80b2a5-77c2-4ac1-be93-36b83de576d1" width="250" height="500"/>|
 
 </br>
 
-| Home | Explore | Post |
+| Home | Story | Comment |
 | --- | ------- | ------- |
-|<img src= "https://jumpshare.com/s/CZWTp0eRBBEnxZMoIAvA" width="250" height="500"/>|<img src= "https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fhome-4.gif?alt=media&token=39dce92e-3c71-442b-a8eb-9f94b9a52d6c" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fpost-6.gif?alt=media&token=e302342d-8bb5-46d5-9bd4-01d65ae20d3d" width="250" height="500"/>|
+|<img src= "https://i.imgur.com/X4s0RTG.png" width="250" height="500"/>|<img src= "https://i.imgur.com/bVA7VZi.png" width="250" height="500"/>|<img src="https://i.imgur.com/VIOnmTf.png" width="250" height="500"/>|
 
 </br>
 
-| Reels | My Profile | Camera |
+| Explore | Post | Reels |
 | --------- | ------ | ------- |
-|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Freels-7.gif?alt=media&token=b1ec6c82-3b62-40ed-8657-63ee340eb538" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fmyprofile-8.gif?alt=media&token=e9241437-b881-4f61-8e6e-0866851575bc" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fcamerapage-2x.gif?alt=media&token=7eb439ee-e0bb-41f5-9211-af57ec8b7cbd" width="250" height="500"/>|
-
+|<img src="https://i.imgur.com/VODcO0m.png" width="250" height="500"/>|<img src="https://i.imgur.com/70DnhAz.png" width="250" height="500"/>|<img src="https://i.imgur.com/2TWow1C.png" width="250" height="500"/>|
 </br>
 
-| Chat | Chat |  
-| --------- | ------- | 
-|<img src= "https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fmesaj1_out.gif?alt=media&token=d0daa9c4-0426-4412-a90a-c9a8e9af7822" width="250" height="500"/>|<img src = "https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fmesaj2_out.gif?alt=media&token=f46c1b5d-7098-4a4c-bdab-6861fe270ac2" width="250" height="500"/> | 
+| My Profile | Chat | Camera |
+| --------- | ------ | ------- |
+|<img src="https://i.imgur.com/NyMpslX.png" width="250" height="500"/>|<img src="https://i.imgur.com/Dw4Gsc6.png" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fcamerapage-2x.gif?alt=media&token=469ed918-cc85-4535-b2a0-71ad114e4972" width="250" height="500"/>|
+
+
+
 
 
 ## Getting Started 🚀
