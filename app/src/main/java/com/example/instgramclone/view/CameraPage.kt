@@ -106,7 +106,6 @@ fun CameraPage(viewModel: PostPageViewModel) {
             if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
                 cameraLauncher.launch(uri)
             } else {
-                // Request a permission
                 permissionLauncher.launch(Manifest.permission.CAMERA)
             }
         }) {

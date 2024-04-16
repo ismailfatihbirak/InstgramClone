@@ -115,7 +115,8 @@ fun HomePage(navController: NavController,viewModel:HomePageViewModel) {
                 ),
                 modifier = Modifier.height(50.dp),
                 title = {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
+                    Box(modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.BottomStart) {
                         Image(
                             painter = painterResource(id = R.drawable.topbarlogo),
                             contentDescription = "Top Bar Logo",

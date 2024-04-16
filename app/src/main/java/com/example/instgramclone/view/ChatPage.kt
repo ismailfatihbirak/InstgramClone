@@ -51,10 +51,6 @@ fun ChatPage(navController: NavController,viewModel: ExplerePageViewModel) {
     var text by remember { mutableStateOf("") }
     val searchResults = viewModel.searchList.observeAsState(arrayListOf())
 
-
-
-
-
     Scaffold (
         topBar = {
             TopAppBar(
@@ -64,7 +60,9 @@ fun ChatPage(navController: NavController,viewModel: ExplerePageViewModel) {
                 ),
                 modifier = Modifier.height(50.dp),
                 title = {
-                    Text(text = "Chats", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text(text = "Chats",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp)
                 })
         }
     ){innerPadding ->

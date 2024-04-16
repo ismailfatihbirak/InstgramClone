@@ -194,17 +194,21 @@ fun MyProfilePage(navController: NavController,viewModel: MyProfileViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(all = 15.dp)){
-                Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
+                Button(onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.tf_color),
                     contentColor = Color.Black
                 ), modifier = Modifier.size(195.dp,35.dp)) {
-                    Text(text = "Edit Profile", fontSize = 12.sp)
+                    Text(text = "Edit Profile",
+                        fontSize = 12.sp)
                 }
-                Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
+                Button(onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.tf_color),
                     contentColor = Color.Black
                 ), modifier = Modifier.size(195.dp,35.dp)) {
-                    Text(text = "Share Profile", fontSize = 12.sp)
+                    Text(text = "Share Profile",
+                        fontSize = 12.sp)
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -232,12 +236,14 @@ fun MyProfileTabExample(photoList : List<Post>,reelList: List<Reel>,viewModel: M
             Tab(
                 selected = selectedTabIndex.value == 0,
                 onClick = { selectedTabIndex.value = 0 },
-                icon = { Icon(painter = painterResource(id = R.drawable.tab_icon), contentDescription = "") }
+                icon = { Icon(painter = painterResource(id = R.drawable.tab_icon),
+                    contentDescription = "") }
             )
             Tab(
                 selected = selectedTabIndex.value == 1,
                 onClick = { selectedTabIndex.value = 1 },
-                icon = { Icon(painter = painterResource(id = R.drawable.tab_icon_video), contentDescription = "") }
+                icon = { Icon(painter = painterResource(id = R.drawable.tab_icon_video),
+                    contentDescription = "") }
             )
         }
 

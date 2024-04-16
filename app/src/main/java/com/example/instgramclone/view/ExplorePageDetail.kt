@@ -70,7 +70,7 @@ fun ExplorePageDetail(index: Int,viewModel: HomePageViewModel) {
                         fontWeight = FontWeight.Bold)
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {  }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Localized description",
@@ -157,14 +157,16 @@ fun LazyColumnExploreDetail(homePageList:List<User>,index: Int) {
                                     }
 
                                 }
-                                Text(text = "liked by daniel and 905,325 others", fontSize = 14.sp,
+                                Text(text = "liked by daniel and 905,325 others",
+                                    fontSize = 14.sp,
                                     modifier = Modifier.padding(start = 12.dp))
-                                Text(text = post.photoDescription!!, fontSize = 14.sp,
+                                Text(text = post.photoDescription!!,
+                                    fontSize = 14.sp,
                                     modifier = Modifier.padding(start = 12.dp))
                                 TextButton(onClick = { /*TODO*/ }) {
-                                    Text(text = "view all comments", fontSize = 14.sp, color = colorResource(
-                                        id = R.color.CommentsAllText
-                                    ))
+                                    Text(text = "view all comments",
+                                        fontSize = 14.sp,
+                                        color = colorResource(id = R.color.CommentsAllText))
                                 }
 
 

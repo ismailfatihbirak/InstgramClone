@@ -89,14 +89,19 @@ fun EditProfilePage(navController: NavController,viewModel:EditProfilePageViewMo
             IconButton(onClick = {
                 navController.navigate("homepage")
             }) {
-                Icon(Icons.Default.Clear, contentDescription = "", modifier = Modifier.size(40.dp))
+                Icon(Icons.Default.Clear,
+                    contentDescription = "",
+                    modifier = Modifier.size(40.dp))
             }
-            Text(text = "Edit Profile", fontSize = 16.sp)
+            Text(text = "Edit Profile",
+                fontSize = 16.sp)
             IconButton(onClick = {
                 viewModel.saveProfileInformation(auth.currentUser?.uid!!,downloadUri!!,userName,name,bio)
                 navController.navigate("homepage")
             }) {
-                Icon(Icons.Default.Check, contentDescription = "", modifier = Modifier.size(40.dp))
+                Icon(Icons.Default.Check,
+                    contentDescription = "",
+                    modifier = Modifier.size(40.dp))
             }
         }
         Column (
@@ -115,7 +120,9 @@ fun EditProfilePage(navController: NavController,viewModel:EditProfilePageViewMo
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
             }) {
-                Text(text = "Change Profile photo", fontSize = 17.sp, color = colorResource(id = R.color.change_profil_photo_text))
+                Text(text = "Change Profile photo",
+                    fontSize = 17.sp,
+                    color = colorResource(id = R.color.change_profil_photo_text))
             }
         }
         Column (

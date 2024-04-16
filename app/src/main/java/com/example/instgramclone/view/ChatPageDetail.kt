@@ -63,8 +63,8 @@ fun ChatPageDetail(navController: NavController,user: User,viewModel: ChatPageDe
     auth = Firebase.auth
     val text = remember { mutableStateOf("") }
 
-    user.authId//alıcı hesap
-    auth.currentUser?.uid//gönderen hesap
+    user.authId
+    auth.currentUser?.uid
 
     Scaffold (
         bottomBar = {
