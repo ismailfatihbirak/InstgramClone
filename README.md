@@ -20,19 +20,19 @@ InstaClone is a social media application developed with a focus on providing use
 
 | Home | Explore | Post |
 | --- | ------- | ------- |
-|<img src= "https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fhome-4.gif?alt=media&token=39dce92e-3c71-442b-a8eb-9f94b9a52d6c" width="250" height="500"/>|<img src= "https://github.com/meetOzan/TopLAN/assets/99891928/21bb4ca7-c8b1-4c9a-86b1-c1d445f3230d)" width="250" height="500"/>|<img src="https://github.com/meetOzan/TopLAN/assets/99891928/8d420082-c28e-4e83-b9be-f9eba9c4be35" width="250" height="500"/>|
+|<img src= "https://jumpshare.com/s/CZWTp0eRBBEnxZMoIAvA" width="250" height="500"/>|<img src= "https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fhome-4.gif?alt=media&token=39dce92e-3c71-442b-a8eb-9f94b9a52d6c" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fpost-6.gif?alt=media&token=e302342d-8bb5-46d5-9bd4-01d65ae20d3d" width="250" height="500"/>|
 
 </br>
 
 | Reels | My Profile | Camera |
 | --------- | ------ | ------- |
-|<img src="https://github.com/meetOzan/TopLAN/assets/99891928/e4770b3d-0508-4ab2-bedc-e7442dc3a303" width="250" height="500"/>|<img src="https://github.com/meetOzan/TopLAN/assets/99891928/fbe05d07-7a5a-4c84-b11b-a5374bd4d854" width="250" height="500"/>|<img src="https://github.com/meetOzan/TopLAN/assets/99891928/f7c61aa5-471e-4fdd-bfee-2210158b6c15" width="250" height="500"/>|
+|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Freels-7.gif?alt=media&token=b1ec6c82-3b62-40ed-8657-63ee340eb538" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fmyprofile-8.gif?alt=media&token=e9241437-b881-4f61-8e6e-0866851575bc" width="250" height="500"/>|<img src="https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fcamerapage-2x.gif?alt=media&token=7eb439ee-e0bb-41f5-9211-af57ec8b7cbd" width="250" height="500"/>|
 
 </br>
 
 | Chat | Chat |  
 | --------- | ------- | 
-|<img src= "https://github.com/meetOzan/TopLAN/assets/99891928/545c4565-6329-4b81-880a-6111e6f8a6d1" width="250" height="500"/>|<img src = "https://github.com/meetOzan/TopLAN/assets/99891928/3234f098-8be4-4273-8ffa-3ee87c722587" width="250" height="500"/> | 
+|<img src= "https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fmesaj1_out.gif?alt=media&token=d0daa9c4-0426-4412-a90a-c9a8e9af7822" width="250" height="500"/>|<img src = "https://firebasestorage.googleapis.com/v0/b/instgramclone-8bb96.appspot.com/o/github%2Fmesaj2_out.gif?alt=media&token=f46c1b5d-7098-4a4c-bdab-6861fe270ac2" width="250" height="500"/> | 
 
 
 ## Getting Started 🚀
